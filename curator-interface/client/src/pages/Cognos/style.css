@@ -1,0 +1,10 @@
+#cognosDiv {
+  height: calc(100vh - 48px);
+}
+
+#content {
+  height: 100%;
+  margin: 0; 
+  overflow: hidden;
+  padding-left: 3rem;
+}

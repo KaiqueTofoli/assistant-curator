@@ -1,0 +1,42 @@
+.card{
+    background-color: #262626;
+    height: 48vh;
+    width: 27.5vw;
+    margin-top: 22vh;
+    margin-left: 1.5vw;
+    color:white;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 3vh;
+    position: static;
+}
+#cards{
+    margin-left: 4vw;
+    display: flex;
+    padding-bottom: 3vh;
+}
+
+.card p{
+    margin-top: 3vh;
+    text-align: justify;
+    height: 28vh;
+    width: 22vw;
+    /* border: 1px solid red; */
+}
+.card button{
+    width: 4vw;
+    /* margin-top: 15vh; */
+    margin-left: 18vw;
+    padding-left: 1.5vw;
+    background-color: #525252;
+    position:relative
+}
+
+.card button:hover{
+    background-color: #656565;
+}
+
+h4 {
+    font-weight: bold;
+    /* border: 1px solid red; */
+}

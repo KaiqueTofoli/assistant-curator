@@ -1,0 +1,32 @@
+.bx--side-nav{
+    background-color: #161616 !important;
+    z-index: 2 !important;
+}
+
+a .bx--side-nav__link{
+    width: 100%;
+    color: white;
+    background-color: #161616;
+}
+
+a:hover{
+    background-color: #4c4c4c !important;
+
+}
+
+.bx--side-nav__icon>svg{
+    fill:white !important;
+}
+
+a.bx--side-nav__link>.bx--side-nav__link-text, .bx--side-nav a.bx--header__menu-item .bx--text-truncate-end{
+    color: white !important; 
+}
+
+.bx--side-nav{
+    color:white;
+}
+
+a{
+    color:white;
+
+}
