@@ -18,7 +18,7 @@ resource "ibm_function_namespace" "namespace" {
 resource "null_resource" "actions" {
   count = length(local.actions)
   provisioner "local-exec" {
-    command = "/bin/bash /scripts/zip_cf.sh"
+    command = "/bin/bash scripts/zip_cf.sh"
 
     environment = {
       FILENAME = local.actions[count.index].name
