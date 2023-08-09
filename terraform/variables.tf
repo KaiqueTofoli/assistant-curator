@@ -43,16 +43,16 @@ variable "dockerfile_directory" {
 ###############################################################
 
 variable "namespace" {
-  description = "The namespace used to create the Cloud Function Actions.\nIf no namespace is provided, the default 'functions-namespace' will be created."
+  description = "The namespace used to create the Cloud Function Actions.\nIf no namespace is provided, the default 'assistant-curator-functions' will be created."
   type        = string
   default     = ""
 }
 
-variable "skillID" {
-  description = "The skill ID of your Watson Assistant.\nIf you don't have one yet, referal to the documeation later to add it."
-  type        = string
-  default     = ""
-}
+# variable "skillID" {
+#   description = "The skill ID of your Watson Assistant.\nIf you don't have one yet, referal to the documeation later to add it."
+#   type        = string
+#   default     = ""
+# }
 
 ###############################################################
 #                                                             #
@@ -60,16 +60,16 @@ variable "skillID" {
 #                                                             #
 ###############################################################
 
-variable "cos_name" {
-  description = "The name of your Cloud Object Storage.\nIf no COS name is provided, the default 'cos-instance' will be created."
-  type        = string
-  default     = ""
+variable "deploy_cos" {
+  description = "If marked as true, the default 'cos-instance' will be created."
+  type        = bool
+  default     = false
 }
 
-variable "bucket_name" {
-  description = "The bucket used to store the logs from your Assistant.\nIf no buckt name is provided, the default 'assistant-curation' bucket will be created."
-  type        = string
-  default     = ""
+variable "create_bucket" {
+  description = "If marked as true, the default 'assistant-curation' bucket will be created."
+  type        = bool
+  default     = false
 }
 
 ###############################################################
@@ -78,10 +78,10 @@ variable "bucket_name" {
 #                                                             #
 ###############################################################
 
-variable "nlu_name" {
-  description = "The name of your Natural Language Understanding Service.\nIf no NLU name is provided, the default 'nlu-instance' will be created."
-  type        = string
-  default     = ""
+variable "deploy_nlu" {
+  description = "If marked as true, the default 'nlu-instance' will be created."
+  type        = bool
+  default     = false
 }
 
 ###############################################################
@@ -90,10 +90,10 @@ variable "nlu_name" {
 #                                                             #
 ###############################################################
 
-variable "db2_name" {
-  description = "The name of your Db2 Instance.\nIf no Db2 name is provided, the default 'db2-instance' will be created."
-  type        = string
-  default     = ""
+variable "deploy_db2" {
+  description = "If marked as true, the default 'db2-instance' will be created."
+  type        = bool
+  default     = false
 }
 
 ###############################################################
@@ -102,16 +102,16 @@ variable "db2_name" {
 #                                                             #
 ###############################################################
 
-variable "has_lite_cloudant" {
-  description = "To prevent erros creating your Cloudant instance, use this variable to inform if you already has any LITE Cloudant Instance in your account.\nIf you change this variable to True, a Standard Cloudant instance will be created."
+# variable "has_lite_cloudant" {
+#   description = "To prevent erros creating your Cloudant instance, use this variable to inform if you already has any LITE Cloudant Instance in your account.\nIf you change this variable to True, a Standard Cloudant instance will be created."
+#   type        = bool
+#   default     = false
+# }
+
+variable "deploy_cloudant" {
+  description = "If marked as true, the default 'cloudant-instance' will be created."
   type        = bool
   default     = false
-}
-
-variable "cloudant_name" {
-  description = "The name of your Cloudant Instance.\nIf no Cloudant name is provided, the default 'cloudant-instance' will be created."
-  type        = string
-  default     = ""
 }
 
 ###############################################################
@@ -120,10 +120,10 @@ variable "cloudant_name" {
 #                                                             #
 ###############################################################
 
-variable "assistant_name" {
-  description = "The name of your Watson Assistant Instance.\nIf no Assistant name is provided, the default 'assistant-instance' will be created."
-  type        = string
-  default     = ""
+variable "deploy_assistant" {
+  description = "If marked as true, the default 'assistant-instance' will be created."
+  type        = bool
+  default     = false
 }
 
 ###############################################################
@@ -132,8 +132,8 @@ variable "assistant_name" {
 #                                                             #
 ###############################################################
 
-variable "cognos_name" {
-  description = "The name of your Cognos Embeded Instance.\nIf no Cognos name is provided, the default 'cognos-instance' will be created."
-  type        = string
-  default     = ""
+variable "deploy_cognos" {
+  description = "If marked as true, the default 'cognos-instance' will be created."
+  type        = bool
+  default     = false
 }
