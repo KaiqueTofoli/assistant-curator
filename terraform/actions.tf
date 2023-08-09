@@ -22,7 +22,7 @@ data "archive_file" "actions" {
   output_path = "../cloud-functions/${local.actions[count.index].name}.zip"
 }
 
-resource "ibm_function_action" "actions" {
+resource "ibm_function_action" "action" {
   count     = length(local.actions)
   name      = local.actions[count.index].name
   namespace = local.namespace_name
