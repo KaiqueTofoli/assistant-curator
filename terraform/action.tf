@@ -32,7 +32,6 @@ resource "ibm_function_action" "action" {
     code_path = "../cloud-functions/${local.actions[count.index].name}.zip"
     kind      = "nodejs:12"
   }
-  depends_on = [archive_file.actions]
 }
 
 resource "ibm_function_action" "sequence" {
@@ -88,5 +87,4 @@ resource "ibm_function_action" "watson-experiments" {
     image     = "iisbrasil/experiment-package"
     kind      = "blackbox"
   }
-  depends_on = [null_resource.experiments-action]
 }
