@@ -1,183 +1,103 @@
-import React, { useContext, useState, useEffect, createContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useState, createContext, useEffect } from "react";
 
-import { getAccounts, getResources } from "../helpers/apiCalls";
+import { US, BR, ES } from "country-flag-icons/react/3x2";
+import { getPublicDashbords } from "../helpers/cloudantApiCalls";
 
 const GlobalStateContext = createContext({});
 
 export default function GlobalStateProvider({ children }) {
-  const history = useHistory();
+  const languageIcons = { pt: <BR />, es: <ES />, en: <US /> };
 
-  const [language, setLanguage] = useState("en");
+  const [interestModal, setInterestModal] = useState(true);
+  const [lightMode, setLightMode] = useState("en");
+  const [loading, setLoading] = useState(false);
 
-  const [accounts, setAccounts] = useState({ resources: [] });
-  const [account, setAccount] = useState({
-    entity: {
-      name: "",
-    },
-  });
-  const [resources, setResources] = useState({
-    cognos: {
-      body: {
-        resources: [
-          {
-            guid: "",
-            name: "",
-          },
-        ],
-      },
-    },
-    cloudant: {
-      body: {
-        resources: [
-          {
-            guid: "",
-            name: "",
-          },
-        ],
-      },
-    },
-    db2: {
-      body: {
-        resources: [
-          {
-            guid: "",
-            name: "",
-          },
-        ],
-      },
-    },
-  });
+  const [logged, setLogged] = useState(false);
 
-  const [loading, setLoading] = useState(true);
+  const [assistants, setAssistants] = useState(null);
 
-  const [helpOpen, setHelpOpen] = useState(false);
-  const [cognosHelpOpen, setCognosHelpOpen] = useState(false);
-  const [homeHelp, setHomeHelpOpen] = useState(false);
-  const [intentHelpOpen, setIntentHelpOpen] = useState(false);
+  const [accounts, setAccounts] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [accountModalOpen, setAccountModalOpen] = useState(true);
 
-  const [configOpen, setConfigOpen] = useState(false);
-  const [cognosConfigOpen, setCognosConfigOpen] = useState(false);
-  const [accountModalOpen, setAccountModalOpen] = useState(false);
-  const [accountLoading, setAccountLoading] = useState(false);
+  const [selectedAssistant, setSelectedAssistant] = useState(null);
+  const [resources, setResources] = useState(null);
 
-  const [accountSelected, setAccountSelected] = useState(false);
-
-  const [saveModalOpen, setSaveModalOpen] = useState(false);
-  const [loadModalOpen, setLoadModalOpen] = useState(false);
-
-  const [warningOpen, setWarningOpen] = useState(false);
-  const [standardDashboardModal, setStandardDashboardModal] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
-
-  const [unsavedChanges, setUnsavedChanges] = useState(false);
-
-  const [rowData, setRowData] = useState([]);
-  const [conversations, setConversations] = useState([]);
-  const [conversationsByDay, setConversationsByDay] = useState({});
-  const [intentsByDay, setIntentsByDay] = useState({});
-  const [dateFilter, setDateFilter] = useState("");
-
+  const [dbName, setDbName] = useState(null);
   const [cognosSession, setCognosSession] = useState(null);
-  const [cognosDashboard, setCognosDashboard] = useState(null);
 
-  const [credentialsAndDefaults, setCredentialsAndDefaults] = useState(
-    JSON.parse(
-      localStorage.getItem("@assistant-curator/credentialsAndDefaults")
-    )
-  );
+  const [logs, setLogs] = useState(null);
+
+  const [openSaveLoadModal, setOpenSaveLoadModal] = useState(false);
+  const [loadedDashboard, setLoadedDashboard] = useState(null);
+
+  const [publicDashboardsModalOpen, setPublicDashboardsModalOpen] =
+    useState(false);
+  const [publicDashboards, setPublicDashboards] = useState([]);
+
+  const [openActionInputModal, setOpenActionInputModal] = useState(false);
+  const [openManualInputModal, setOpenManualInputModal] = useState(false);
+
+  const [disableAllInputs, setDisableAllInputs] = useState(false);
 
   // pagination
-  const [itensPerPage, setItensPerPage] = useState(9);
+  const [itensPerPage, setItensPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itensPerPage;
   const endIndex = startIndex + itensPerPage;
 
-  useEffect(async () => {
-    if (account.entity.name !== "") {
-      await getAccounts()
-        .then((res) => setAccounts(res))
-        .catch((err) => {
-          if (err.response.status === 401) history.push("/login");
-        });
-      await getResources()
-        .then((res) => {
-          setResources(res);
-          setAccountLoading(false);
-        })
-        .catch((err) => {
-          if (err.response.status === 401) history.push("/login");
-        });
-    }
-  }, [account]);
-
   useEffect(() => {
-    localStorage.setItem(
-      "@assistant-curator/credentialsAndDefaults",
-      JSON.stringify(credentialsAndDefaults)
-    );
-  }, [credentialsAndDefaults]);
+    if (assistants) {
+      if (!selectedAssistant) {
+        setSelectedAssistant(assistants[0]);
+      }
+    }
+  }, [assistants]);
 
   return (
     <GlobalStateContext.Provider
       value={{
-        language,
-        setLanguage,
+        languageIcons,
+        interestModal,
+        setInterestModal,
+        lightMode,
+        setLightMode,
         loading,
         setLoading,
-        helpOpen,
-        setHelpOpen,
-        homeHelp,
-        setHomeHelpOpen,
-        intentHelpOpen,
-        setIntentHelpOpen,
-        cognosHelpOpen,
-        setCognosHelpOpen,
-        saveModalOpen,
-        setSaveModalOpen,
-        loadModalOpen,
-        setLoadModalOpen,
-        warningOpen,
-        setWarningOpen,
-        standardDashboardModal,
-        setStandardDashboardModal,
-        successOpen,
-        setSuccessOpen,
-        unsavedChanges,
-        setUnsavedChanges,
-        configOpen,
-        setConfigOpen,
-        cognosConfigOpen,
-        setCognosConfigOpen,
-        accountModalOpen,
-        setAccountModalOpen,
-        accountSelected,
-        setAccountSelected,
-        accountLoading,
-        setAccountLoading,
-        rowData,
-        setRowData,
-        conversations,
-        setConversations,
-        conversationsByDay,
-        setConversationsByDay,
-        intentsByDay,
-        setIntentsByDay,
-        dateFilter,
-        setDateFilter,
-        cognosSession,
-        setCognosSession,
-        cognosDashboard,
-        setCognosDashboard,
-        credentialsAndDefaults,
-        setCredentialsAndDefaults,
-        history,
+        logged,
+        setLogged,
+        assistants,
+        setAssistants,
         accounts,
         setAccounts,
         account,
         setAccount,
+        accountModalOpen,
+        setAccountModalOpen,
+        selectedAssistant,
+        setSelectedAssistant,
         resources,
         setResources,
+        dbName,
+        setDbName,
+        cognosSession,
+        setCognosSession,
+        logs,
+        setLogs,
+        openSaveLoadModal,
+        setOpenSaveLoadModal,
+        loadedDashboard,
+        setLoadedDashboard,
+        publicDashboardsModalOpen,
+        setPublicDashboardsModalOpen,
+        publicDashboards,
+        setPublicDashboards,
+        openActionInputModal,
+        setOpenActionInputModal,
+        openManualInputModal,
+        setOpenManualInputModal,
+        disableAllInputs,
+        setDisableAllInputs,
         itensPerPage,
         setItensPerPage,
         currentPage,

@@ -30,18 +30,7 @@ function initializeDashboard(
   driverClassName,
   schema,
   user,
-  password,
-  logsTable,
-  conversationTable,
-  callsTable,
-  contextTable,
-  conversationPathTable,
-  overviewTable,
-  classDistributionTable,
-  precisionAtKTable,
-  classAccuracyTable,
-  pairWiseClassErrorsTable,
-  accuracyVsCoverageTable
+  password
 ) {
   const standardDashboard = {
     name: "Standard dashboard",
@@ -2180,7 +2169,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${logsTable}`,
+              name: `LOGS`,
               description: "First Table",
               column: [
                 {
@@ -2366,7 +2355,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${logsTable}`],
+                  ref: [`ES.LOGS`],
                   instanceType: "reference",
                   item: [
                     {
@@ -2489,8 +2478,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${logsTable}`,
-                  idForExpression: `${logsTable}`,
+                  identifier: `LOGS`,
+                  idForExpression: `LOGS`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -2517,7 +2506,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${conversationTable}`,
+              name: `CONVERSATIONS`,
               description: "Second Table",
               column: [
                 {
@@ -2633,7 +2622,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${conversationTable}`],
+                  ref: [`ES.CONVERSATIONS`],
                   instanceType: "reference",
                   item: [
                     {
@@ -3268,8 +3257,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${conversationTable}`,
-                  idForExpression: `${conversationTable}`,
+                  identifier: `CONVERSATIONS`,
+                  idForExpression: `CONVERSATIONS`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -3296,7 +3285,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${callsTable}`,
+              name: `CALLS`,
               description: "Third Table",
               column: [
                 {
@@ -3412,7 +3401,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${callsTable}`],
+                  ref: [`ES.CALLS`],
                   instanceType: "reference",
                   item: [
                     {
@@ -3515,8 +3504,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${callsTable}`,
-                  idForExpression: `${callsTable}`,
+                  identifier: `CALLS`,
+                  idForExpression: `CALLS`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -3543,7 +3532,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${contextTable}`,
+              name: `CONTEXTVARIABLES`,
               description: "Fourth Table",
               column: [
                 {
@@ -3614,7 +3603,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${conversationPathTable}`,
+              name: `CONVERSATIONPATH`,
               description: "Conversation Path",
               column: [
                 {
@@ -3675,7 +3664,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${overviewTable}`,
+              name: `OVERVIEW`,
               description: "Overview",
               column: [
                 {
@@ -3726,7 +3715,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${classDistributionTable}`,
+              name: `CLASSDISTRIBUTION`,
               description: "ClassDistribution",
               column: [
                 {
@@ -3772,7 +3761,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${classDistributionTable}`],
+                  ref: [`ES.CLASSDISTRIBUTION`],
                   instanceType: "reference",
                   item: [
                     {
@@ -3798,8 +3787,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${classDistributionTable}`,
-                  idForExpression: `${classDistributionTable}`,
+                  identifier: `CLASSDISTRIBUTION`,
+                  idForExpression: `CLASSDISTRIBUTION`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -3826,8 +3815,8 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${precisionAtKTable}`,
-              description: `${precisionAtKTable}`,
+              name: `PRECISIONATK`,
+              description: `PRECISIONATK`,
               column: [
                 {
                   name: "K",
@@ -3872,7 +3861,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${precisionAtKTable}`],
+                  ref: [`ES.PRECISIONATK`],
                   instanceType: "reference",
                   item: [
                     {
@@ -3898,8 +3887,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${precisionAtKTable}`,
-                  idForExpression: `${precisionAtKTable}`,
+                  identifier: `PRECISIONATK`,
+                  idForExpression: `PRECISIONATK`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -3926,7 +3915,7 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${classAccuracyTable}`,
+              name: `CLASSACCURACY`,
               description: "ClassDistribution",
               column: [
                 {
@@ -4002,7 +3991,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${classAccuracyTable}`],
+                  ref: [`ES.CLASSACCURACY`],
                   instanceType: "reference",
                   item: [
                     {
@@ -4050,8 +4039,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${classAccuracyTable}`,
-                  idForExpression: `${classAccuracyTable}`,
+                  identifier: `CLASSACCURACY`,
+                  idForExpression: `CLASSACCURACY`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -4078,8 +4067,8 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${pairWiseClassErrorsTable}`,
-              description: `${pairWiseClassErrorsTable}`,
+              name: `PAIRWISECLASSERRORS`,
+              description: `PAIRWISECLASSERRORS`,
               column: [
                 {
                   name: "TRUECLASS",
@@ -4144,7 +4133,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${pairWiseClassErrorsTable}`],
+                  ref: [`ES.PAIRWISECLASSERRORS`],
                   instanceType: "reference",
                   item: [
                     {
@@ -4170,8 +4159,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${pairWiseClassErrorsTable}`,
-                  idForExpression: `${pairWiseClassErrorsTable}`,
+                  identifier: `PAIRWISECLASSERRORS`,
+                  idForExpression: `PAIRWISECLASSERRORS`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -4198,8 +4187,8 @@ function initializeDashboard(
               password: password,
             },
             table: {
-              name: `${accuracyVsCoverageTable}`,
-              description: `${accuracyVsCoverageTable}`,
+              name: `ACCURACYVSCOVERAGE`,
+              description: `ACCURACYVSCOVERAGE`,
               column: [
                 {
                   name: "CONFIDENCETHRESHOLD",
@@ -4254,7 +4243,7 @@ function initializeDashboard(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${accuracyVsCoverageTable}`],
+                  ref: [`ES.ACCURACYVSCOVERAGE`],
                   instanceType: "reference",
                   item: [
                     {
@@ -4324,8 +4313,8 @@ function initializeDashboard(
                       },
                     },
                   ],
-                  identifier: `${accuracyVsCoverageTable}`,
-                  idForExpression: `${accuracyVsCoverageTable}`,
+                  identifier: `ACCURACYVSCOVERAGE`,
+                  idForExpression: `ACCURACYVSCOVERAGE`,
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -4351,19 +4340,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_675748283",
-                  itemId: `${conversationTable}.C_Conversation_Start_T`,
+                  itemId: `CONVERSATIONS.C_Conversation_Start_T`,
                   itemLabel: "simpleDate",
                   navigationPathId: null,
                 },
                 {
                   id: "id559722038",
-                  itemId: `${conversationTable}.Chat_Count`,
+                  itemId: `CONVERSATIONS.Chat_Count`,
                   itemLabel: "Chat Count",
                   navigationPathId: null,
                 },
                 {
                   id: "id_1324639312",
-                  itemId: `${conversationTable}.Phone_Count`,
+                  itemId: `CONVERSATIONS.Phone_Count`,
                   itemLabel: "Phone Count",
                   navigationPathId: null,
                 },
@@ -4424,19 +4413,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_675748283",
-                  itemId: `${conversationTable}.C_Conversation_Start_T`,
+                  itemId: `CONVERSATIONS.C_Conversation_Start_T`,
                   itemLabel: "simpleDate",
                   navigationPathId: null,
                 },
                 {
                   id: "id289202159",
-                  itemId: `${conversationTable}.newUser_1`,
+                  itemId: `CONVERSATIONS.newUser_1`,
                   itemLabel: "newUser",
                   navigationPathId: null,
                 },
                 {
                   id: "id_1137690479",
-                  itemId: `${conversationTable}.reccurrentUsers`,
+                  itemId: `CONVERSATIONS.reccurrentUsers`,
                   itemLabel: "reccurrentUsers",
                   navigationPathId: null,
                 },
@@ -4500,14 +4489,14 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_984020379",
-                  itemId: `${conversationTable}.durationQuartile`,
+                  itemId: `CONVERSATIONS.durationQuartile`,
                   itemLabel: "durationQuartile",
                   aggregate: "countdistinct",
                   navigationPathId: null,
                 },
                 {
                   id: "id956341870",
-                  itemId: `${conversationTable}.Phone_Count`,
+                  itemId: `CONVERSATIONS.Phone_Count`,
                   itemLabel: "Phone Count",
                   navigationPathId: null,
                 },
@@ -4612,7 +4601,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_2115705388",
-                  itemId: `${conversationTable}.C_transferedUsers`,
+                  itemId: `CONVERSATIONS.C_transferedUsers`,
                   itemLabel: "C_transferedUsers",
                   format: {
                     formatSpec: {
@@ -4686,7 +4675,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id308483713",
-                  itemId: `${conversationTable}.i_relevant`,
+                  itemId: `CONVERSATIONS.i_relevant`,
                   itemLabel: "%relevant",
                   format: {
                     formatSpec: {
@@ -4754,13 +4743,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_675748283",
-                  itemId: `${conversationTable}.C_Conversation_Start_T`,
+                  itemId: `CONVERSATIONS.C_Conversation_Start_T`,
                   itemLabel: "simpleDate",
                   navigationPathId: null,
                 },
                 {
                   id: "id1182478968",
-                  itemId: `${conversationTable}.CONVERSATIONID`,
+                  itemId: `CONVERSATIONS.CONVERSATIONID`,
                   itemLabel: "ID Conversation",
                   aggregate: "count",
                   navigationPathId: null,
@@ -4832,7 +4821,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_202502243",
-                  itemId: `${logsTable}.FIRSTINTENT`,
+                  itemId: `LOGS.FIRSTINTENT`,
                   itemLabel: "First Intent",
                   format: {
                     formatSpec: {
@@ -4845,7 +4834,7 @@ function initializeDashboard(
                 },
                 {
                   id: "id731071238",
-                  itemId: `${logsTable}.FIRSTINTENT`,
+                  itemId: `LOGS.FIRSTINTENT`,
                   itemLabel: "First Intent",
                   navigationPathId: null,
                 },
@@ -4913,13 +4902,13 @@ function initializeDashboard(
         ],
         localFilters: [
           {
-            id: `${logsTable}.FIRSTINTENT`,
-            columnId: `${logsTable}.FIRSTINTENT`,
+            id: `LOGS.FIRSTINTENT`,
+            columnId: `LOGS.FIRSTINTENT`,
             values: [
               {
-                u: `${logsTable}.FIRSTINTENT->[]`,
+                u: `LOGS.FIRSTINTENT->[]`,
                 d: "",
-                value: `${logsTable}.FIRSTINTENT->[]`,
+                value: `LOGS.FIRSTINTENT->[]`,
                 label: "",
                 selected: true,
               },
@@ -4952,7 +4941,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_250085716",
-                  itemId: `${conversationTable}.CONVERSATIONID`,
+                  itemId: `CONVERSATIONS.CONVERSATIONID`,
                   itemLabel: "ID Conversation",
                   aggregate: "countdistinct",
                   navigationPathId: null,
@@ -5153,7 +5142,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1362727861",
-                  itemId: `${logsTable}.Média_mensagem_conversa`,
+                  itemId: `LOGS.Média_mensagem_conversa`,
                   itemLabel: "Média mensagem/conversa",
                   format: {
                     formatSpec: {
@@ -5222,7 +5211,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1305286256",
-                  itemId: `${logsTable}.LOGID`,
+                  itemId: `LOGS.LOGID`,
                   itemLabel: "ID Log",
                 },
               ],
@@ -5387,7 +5376,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_838608076",
-                  itemId: `${conversationTable}.IDUSER`,
+                  itemId: `CONVERSATIONS.IDUSER`,
                   itemLabel: "ID User",
                   navigationPathId: null,
                 },
@@ -5453,29 +5442,29 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id895248692",
-                  itemId: `${conversationTable}.noFeedback`,
+                  itemId: `CONVERSATIONS.noFeedback`,
                   itemLabel: "noFeedback",
                 },
                 {
                   id: "id436348580",
-                  itemId: `${conversationTable}.perfectFeedback`,
+                  itemId: `CONVERSATIONS.perfectFeedback`,
                   itemLabel: "perfectFeedback",
                 },
                 {
                   id: "id1265902768",
-                  itemId: `${conversationTable}.goodFeedback`,
+                  itemId: `CONVERSATIONS.goodFeedback`,
                   itemLabel: "goodFeedback",
                   navigationPathId: null,
                 },
                 {
                   id: "id_294592536",
-                  itemId: `${conversationTable}.mediumFeedback`,
+                  itemId: `CONVERSATIONS.mediumFeedback`,
                   itemLabel: "mediumFeedback",
                   navigationPathId: null,
                 },
                 {
                   id: "id245428276",
-                  itemId: `${conversationTable}.C_Conversation_Feedbac`,
+                  itemId: `CONVERSATIONS.C_Conversation_Feedbac`,
                   itemLabel: "badFeedback",
                   navigationPathId: null,
                 },
@@ -5584,13 +5573,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1448369390",
-                  itemId: `${classDistributionTable}.INTENT`,
+                  itemId: `CLASSDISTRIBUTION.INTENT`,
                   itemLabel: "Intent",
                   navigationPathId: null,
                 },
                 {
                   id: "id1277556642",
-                  itemId: `${classDistributionTable}.COUNT_`,
+                  itemId: `CLASSDISTRIBUTION.COUNT_`,
                   itemLabel: "Count",
                   selection: [
                     {
@@ -5652,13 +5641,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1010568375",
-                  itemId: `${precisionAtKTable}.K`,
+                  itemId: `PRECISIONATK.K`,
                   itemLabel: "K",
                   navigationPathId: null,
                 },
                 {
                   id: "id1973712085",
-                  itemId: `${precisionAtKTable}.PRECISION_`,
+                  itemId: `PRECISIONATK.PRECISION_`,
                   itemLabel: "Precision",
                   aggregate: "avg",
                   navigationPathId: null,
@@ -5710,25 +5699,25 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id676329342",
-                  itemId: `${classAccuracyTable}.PRECISION_`,
+                  itemId: `CLASSACCURACY.PRECISION_`,
                   itemLabel: "Precision",
                   navigationPathId: null,
                 },
                 {
                   id: "id1672338317",
-                  itemId: `${classAccuracyTable}.COUNT_`,
+                  itemId: `CLASSACCURACY.COUNT_`,
                   itemLabel: "Count",
                   navigationPathId: null,
                 },
                 {
                   id: "id1668976708",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: `CLASSACCURACY.CLASS_`,
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id71827175",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: `CLASSACCURACY.CLASS_`,
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
@@ -5806,19 +5795,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1650511713",
-                  itemId: `${pairWiseClassErrorsTable}.TRUECLASS`,
+                  itemId: `PAIRWISECLASSERRORS.TRUECLASS`,
                   itemLabel: "True Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id_1585230647",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: `PAIRWISECLASSERRORS.PREDICTEDCLASS`,
                   itemLabel: "Predicted Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1536647827",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: `PAIRWISECLASSERRORS.CONFIDENCE`,
                   itemLabel: "Confidence",
                   aggregate: "avg",
                   format: {
@@ -5836,7 +5825,7 @@ function initializeDashboard(
                 },
                 {
                   id: "id1549813825",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: `PAIRWISECLASSERRORS.PREDICTEDCLASS`,
                   itemLabel: "Predicted Class",
                   aggregate: "count",
                   format: {
@@ -5913,13 +5902,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id2054118281",
-                  itemId: `${accuracyVsCoverageTable}.ACCURACY`,
+                  itemId: `ACCURACYVSCOVERAGE.ACCURACY`,
                   itemLabel: "Accuracy",
                   navigationPathId: null,
                 },
                 {
                   id: "id_460908424",
-                  itemId: `${accuracyVsCoverageTable}.COVERAGE`,
+                  itemId: `ACCURACYVSCOVERAGE.COVERAGE`,
                   itemLabel: "Coverage",
                   navigationPathId: null,
                 },
@@ -5930,7 +5919,7 @@ function initializeDashboard(
                 },
                 {
                   id: "id_867777022",
-                  itemId: `${accuracyVsCoverageTable}.CONFIDENCETHRESHOLD`,
+                  itemId: `ACCURACYVSCOVERAGE.CONFIDENCETHRESHOLD`,
                   itemLabel: "Confidence Threshold",
                   navigationPathId: null,
                 },
@@ -5992,13 +5981,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_1585230647",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: `PAIRWISECLASSERRORS.PREDICTEDCLASS`,
                   itemLabel: "Predicted Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1536647827",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: `PAIRWISECLASSERRORS.CONFIDENCE`,
                   itemLabel: "Confidence",
                   aggregate: "avg",
                   format: {
@@ -6016,19 +6005,19 @@ function initializeDashboard(
                 },
                 {
                   id: "id_1508238722",
-                  itemId: `${pairWiseClassErrorsTable}.INPUT_`,
+                  itemId: `PAIRWISECLASSERRORS.INPUT_`,
                   itemLabel: "Input",
                   navigationPathId: null,
                 },
                 {
                   id: "id1390261713",
-                  itemId: `${pairWiseClassErrorsTable}.TRUECLASS`,
+                  itemId: `PAIRWISECLASSERRORS.TRUECLASS`,
                   itemLabel: "True Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id_542359894",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: `PAIRWISECLASSERRORS.CONFIDENCE`,
                   itemLabel: "Confidence",
                   navigationPathId: null,
                 },
@@ -6121,12 +6110,12 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1448369390",
-                  itemId: `${classDistributionTable}.INTENT`,
+                  itemId: `CLASSDISTRIBUTION.INTENT`,
                   itemLabel: "Intent",
                 },
                 {
                   id: "id1277556642",
-                  itemId: `${classDistributionTable}.COUNT_`,
+                  itemId: `CLASSDISTRIBUTION.COUNT_`,
                   itemLabel: "Count",
                   navigationPathId: null,
                 },
@@ -6171,13 +6160,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1010568375",
-                  itemId: `${precisionAtKTable}.K`,
+                  itemId: `PRECISIONATK.K`,
                   itemLabel: "K",
                   navigationPathId: null,
                 },
                 {
                   id: "id1973712085",
-                  itemId: `${precisionAtKTable}.PRECISION_`,
+                  itemId: `PRECISIONATK.PRECISION_`,
                   itemLabel: "Precision",
                   format: {
                     formatSpec: {
@@ -6237,13 +6226,13 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1668976708",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: `CLASSACCURACY.CLASS_`,
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1672338317",
-                  itemId: `${classAccuracyTable}.COUNT_`,
+                  itemId: `CLASSACCURACY.COUNT_`,
                   itemLabel: "Count",
                   selection: [
                     {
@@ -6260,7 +6249,7 @@ function initializeDashboard(
                 },
                 {
                   id: "id676329342",
-                  itemId: `${classAccuracyTable}.PRECISION_`,
+                  itemId: `CLASSACCURACY.PRECISION_`,
                   itemLabel: "Precision",
                   aggregate: "avg",
                   navigationPathId: null,
@@ -6338,26 +6327,26 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id279678395",
-                  itemId: `${logsTable}.NODETITLE`,
+                  itemId: `LOGS.NODETITLE`,
                   itemLabel: "Node Title",
                   navigationPathId: null,
                 },
                 {
                   id: "id1313768377",
-                  itemId: `${logsTable}.CONVERSATIONID`,
+                  itemId: `LOGS.CONVERSATIONID`,
                   itemLabel: "ID Conversation",
                   aggregate: "countdistinct",
                   navigationPathId: null,
                 },
                 {
                   id: "id_456014350",
-                  itemId: `${logsTable}.C_Curator_Score`,
+                  itemId: `LOGS.C_Curator_Score`,
                   itemLabel: "C_Curator Score",
                   navigationPathId: null,
                 },
                 {
                   id: "id_1929785377",
-                  itemId: `${logsTable}.NODETITLE`,
+                  itemId: `LOGS.NODETITLE`,
                   itemLabel: "Node Title",
                   navigationPathId: null,
                 },
@@ -6444,19 +6433,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id279678395",
-                  itemId: `${logsTable}.NODETITLE`,
+                  itemId: `LOGS.NODETITLE`,
                   itemLabel: "Node Title",
                   navigationPathId: null,
                 },
                 {
                   id: "id_456014350",
-                  itemId: `${logsTable}.C_Curator_Score`,
+                  itemId: `LOGS.C_Curator_Score`,
                   itemLabel: "C_Curator Score",
                   navigationPathId: null,
                 },
                 {
                   id: "id1505327620",
-                  itemId: `${logsTable}.LOGID`,
+                  itemId: `LOGS.LOGID`,
                   itemLabel: "ID Log",
                   navigationPathId: null,
                 },
@@ -6489,8 +6478,8 @@ function initializeDashboard(
         properties: [],
         localFilters: [
           {
-            id: `${logsTable}.C_Curator_Score`,
-            columnId: `${logsTable}.C_Curator_Score`,
+            id: `LOGS.C_Curator_Score`,
+            columnId: `LOGS.C_Curator_Score`,
             values: [
               {
                 u: null,
@@ -6530,26 +6519,26 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1313768377",
-                  itemId: `${logsTable}.CONVERSATIONID`,
+                  itemId: `LOGS.CONVERSATIONID`,
                   itemLabel: "ID Conversation",
                   aggregate: "countdistinct",
                   navigationPathId: null,
                 },
                 {
                   id: "id_456014350",
-                  itemId: `${logsTable}.C_Curator_Score`,
+                  itemId: `LOGS.C_Curator_Score`,
                   itemLabel: "C_Curator Score",
                   navigationPathId: null,
                 },
                 {
                   id: "id_52530127",
-                  itemId: `${logsTable}.FIRSTINTENT`,
+                  itemId: `LOGS.FIRSTINTENT`,
                   itemLabel: "First Intent",
                   navigationPathId: null,
                 },
                 {
                   id: "id1107705259",
-                  itemId: `${logsTable}.FIRSTINTENT`,
+                  itemId: `LOGS.FIRSTINTENT`,
                   itemLabel: "First Intent",
                   navigationPathId: null,
                 },
@@ -6615,13 +6604,13 @@ function initializeDashboard(
         ],
         localFilters: [
           {
-            id: `${logsTable}.FIRSTINTENT`,
-            columnId: `${logsTable}.FIRSTINTENT`,
+            id: `LOGS.FIRSTINTENT`,
+            columnId: `LOGS.FIRSTINTENT`,
             values: [
               {
-                u: `${logsTable}.FIRSTINTENT->[]`,
+                u: `LOGS.FIRSTINTENT->[]`,
                 d: "",
-                value: `${logsTable}.FIRSTINTENT->[]`,
+                value: `LOGS.FIRSTINTENT->[]`,
                 label: "",
                 selected: true,
               },
@@ -6656,19 +6645,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_456014350",
-                  itemId: `${logsTable}.C_Curator_Score`,
+                  itemId: `LOGS.C_Curator_Score`,
                   itemLabel: "C_Curator Score",
                   navigationPathId: null,
                 },
                 {
                   id: "id1505327620",
-                  itemId: `${logsTable}.LOGID`,
+                  itemId: `LOGS.LOGID`,
                   itemLabel: "ID Log",
                   navigationPathId: null,
                 },
                 {
                   id: "id_52530127",
-                  itemId: `${logsTable}.FIRSTINTENT`,
+                  itemId: `LOGS.FIRSTINTENT`,
                   itemLabel: "First Intent",
                   navigationPathId: null,
                 },
@@ -6702,8 +6691,8 @@ function initializeDashboard(
         properties: [],
         localFilters: [
           {
-            id: `${logsTable}.C_Curator_Score`,
-            columnId: `${logsTable}.C_Curator_Score`,
+            id: `LOGS.C_Curator_Score`,
+            columnId: `LOGS.C_Curator_Score`,
             values: [
               {
                 u: null,
@@ -6719,13 +6708,13 @@ function initializeDashboard(
             binsLabel: "C_Curator Score",
           },
           {
-            id: `${logsTable}.FIRSTINTENT`,
-            columnId: `${logsTable}.FIRSTINTENT`,
+            id: `LOGS.FIRSTINTENT`,
+            columnId: `LOGS.FIRSTINTENT`,
             values: [
               {
-                u: `${logsTable}.FIRSTINTENT->[]`,
+                u: `LOGS.FIRSTINTENT->[]`,
                 d: "",
-                value: `${logsTable}.FIRSTINTENT->[]`,
+                value: `LOGS.FIRSTINTENT->[]`,
                 label: "",
                 selected: true,
               },
@@ -6752,19 +6741,19 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_57101700",
-                  itemId: `${conversationPathTable}.ORIGINNODE`,
+                  itemId: `CONVERSATIONPATH.ORIGINNODE`,
                   itemLabel: "Origin Node",
                   navigationPathId: null,
                 },
                 {
                   id: "id_645157108",
-                  itemId: `${conversationPathTable}.DESTINENODE`,
+                  itemId: `CONVERSATIONPATH.DESTINENODE`,
                   itemLabel: "Destine Node",
                   navigationPathId: null,
                 },
                 {
                   id: "id1628978",
-                  itemId: `${conversationPathTable}.CONVERSATIONID`,
+                  itemId: `CONVERSATIONPATH.CONVERSATIONID`,
                   itemLabel: "Conversation ID",
                   aggregate: "countdistinct",
                   navigationPathId: null,
@@ -6807,13 +6796,13 @@ function initializeDashboard(
         ],
         localFilters: [
           {
-            id: `${conversationPathTable}.DESTINENODE`,
-            columnId: `${conversationPathTable}.DESTINENODE`,
+            id: `CONVERSATIONPATH.DESTINENODE`,
+            columnId: `CONVERSATIONPATH.DESTINENODE`,
             values: [
               {
-                u: `${conversationPathTable}.DESTINENODE->[]`,
+                u: `CONVERSATIONPATH.DESTINENODE->[]`,
                 d: "",
-                value: `${conversationPathTable}.DESTINENODE->[]`,
+                value: `CONVERSATIONPATH.DESTINENODE->[]`,
                 label: "",
                 selected: true,
               },
@@ -6839,7 +6828,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_57101700",
-                  itemId: `${conversationPathTable}.ORIGINNODE`,
+                  itemId: `CONVERSATIONPATH.ORIGINNODE`,
                   itemLabel: "Origin Node",
                   format: {
                     formatSpec: {
@@ -6889,7 +6878,7 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id1719230215",
-                  itemId: `${callsTable}.C_concludedConversatio`,
+                  itemId: `CALLS.C_concludedConversatio`,
                   itemLabel: "%concluded",
                   format: {
                     formatSpec: {
@@ -6960,14 +6949,14 @@ function initializeDashboard(
               dataItems: [
                 {
                   id: "id_2026850761",
-                  itemId: `${callsTable}.CONVERSATIONID`,
+                  itemId: `CALLS.CONVERSATIONID`,
                   itemLabel: "ID Conversation",
                   aggregate: "countdistinct",
                   navigationPathId: null,
                 },
                 {
                   id: "id_196299349",
-                  itemId: `${callsTable}.CONCLUDED`,
+                  itemId: `CALLS.CONCLUDED`,
                   itemLabel: "Finished Conversations",
                   navigationPathId: null,
                 },
@@ -7046,13 +7035,7 @@ function initializeExperiments(
   driverClassName,
   schema,
   user,
-  password,
-  overviewTable,
-  classDistributionTable,
-  precisionAtKTable,
-  classAccuracyTable,
-  pairWiseClassErrorsTable,
-  accuracyVsCoverageTable
+  password
 ) {
   const standardDashboard = {
     name: "Standard dashboard",
@@ -7079,10 +7062,10 @@ function initializeExperiments(
                 {
                   id: "model0000017fff18ef93_00000000",
                   style: {
-                    left: "1%",
-                    top: "0.3465453757851419%",
-                    height: "49.86320121290882%",
-                    width: "97.31510721247564%",
+                    left: "0.900163666121113%",
+                    top: "0.14548099654482632%",
+                    height: "49.86026550281869%",
+                    width: "97.3150572831424%",
                   },
                   type: "widget",
                   relatedLayouts: "",
@@ -7133,10 +7116,10 @@ function initializeExperiments(
                 {
                   id: "model0000017fff1b9dfc_00000004",
                   style: {
-                    left: "0.9658246656760773%",
-                    top: "1.58494304110946%",
-                    height: "49.019778768367175%",
-                    width: "98.2258543833581%",
+                    left: "0.9814612868047983%",
+                    top: "1.5509526726791931%",
+                    height: "46.8224857118485%",
+                    width: "98.22366412213741%",
                   },
                   type: "widget",
                   relatedLayouts: "",
@@ -8357,11 +8340,11 @@ function initializeExperiments(
         },
         "Accuracy (Sum)": {
           v: 34,
-          s: 50,
+          s: 53,
         },
         "Coverage (Sum)": {
           v: 35,
-          s: 50,
+          s: 53,
         },
         "6.4_teste_power:sim": {
           v: 36,
@@ -8512,8 +8495,20 @@ function initializeExperiments(
           v: 24,
           s: 46,
         },
+        Fallback: {
+          v: 25,
+          s: 52,
+        },
+        Olá_Que_horas_são: {
+          v: 26,
+          s: 52,
+        },
+        Qual_seu_nome: {
+          v: 27,
+          s: 52,
+        },
       },
-      saveId: 51,
+      saveId: 53,
     },
     pageContext: [],
     dataSources: {
@@ -8524,20 +8519,20 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217ca_00000000",
           clientId: "fifthTable",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${overviewTable}`,
+              name: "OVERVIEW",
               description: "Overview",
               column: [
                 {
@@ -8575,20 +8570,20 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217cc_00000000",
           clientId: "6Table",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${classDistributionTable}`,
+              name: "CLASSDISTRIBUTION",
               description: "ClassDistribution",
               column: [
                 {
@@ -8634,7 +8629,7 @@ function initializeExperiments(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${classDistributionTable}`],
+                  ref: ["ES.CLASSDISTRIBUTION"],
                   instanceType: "reference",
                   item: [
                     {
@@ -8660,8 +8655,8 @@ function initializeExperiments(
                       },
                     },
                   ],
-                  identifier: `${classDistributionTable}`,
-                  idForExpression: `${classDistributionTable}`,
+                  identifier: "CLASSDISTRIBUTION",
+                  idForExpression: "CLASSDISTRIBUTION",
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -8675,21 +8670,21 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217cc_00000003",
           clientId: "7Table",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${precisionAtKTable}`,
-              description: `${precisionAtKTable}`,
+              name: "PRECISIONATK",
+              description: "PRECISIONATK",
               column: [
                 {
                   name: "K",
@@ -8734,7 +8729,7 @@ function initializeExperiments(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${precisionAtKTable}`],
+                  ref: ["ES.PRECISIONATK"],
                   instanceType: "reference",
                   item: [
                     {
@@ -8760,8 +8755,8 @@ function initializeExperiments(
                       },
                     },
                   ],
-                  identifier: `${precisionAtKTable}`,
-                  idForExpression: `${precisionAtKTable}`,
+                  identifier: "PRECISIONATK",
+                  idForExpression: "PRECISIONATK",
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -8775,20 +8770,20 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217cc_00000006",
           clientId: "8Table",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${classAccuracyTable}`,
+              name: "CLASSACCURACY",
               description: "ClassDistribution",
               column: [
                 {
@@ -8864,7 +8859,7 @@ function initializeExperiments(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${classAccuracyTable}`],
+                  ref: ["ES.CLASSACCURACY"],
                   instanceType: "reference",
                   item: [
                     {
@@ -8912,8 +8907,8 @@ function initializeExperiments(
                       },
                     },
                   ],
-                  identifier: `${classAccuracyTable}`,
-                  idForExpression: `${classAccuracyTable}`,
+                  identifier: "CLASSACCURACY",
+                  idForExpression: "CLASSACCURACY",
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -8927,21 +8922,21 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217cd_00000000",
           clientId: "9Table",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${pairWiseClassErrorsTable}`,
-              description: `${pairWiseClassErrorsTable}`,
+              name: "PAIRWISECLASSERRORS",
+              description: "PAIRWISECLASSERRORS",
               column: [
                 {
                   name: "TRUECLASS",
@@ -9006,7 +9001,7 @@ function initializeExperiments(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${pairWiseClassErrorsTable}`],
+                  ref: ["ES.PAIRWISECLASSERRORS"],
                   instanceType: "reference",
                   item: [
                     {
@@ -9032,8 +9027,8 @@ function initializeExperiments(
                       },
                     },
                   ],
-                  identifier: `${pairWiseClassErrorsTable}`,
-                  idForExpression: `${pairWiseClassErrorsTable}`,
+                  identifier: "PAIRWISECLASSERRORS",
+                  idForExpression: "PAIRWISECLASSERRORS",
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -9047,21 +9042,21 @@ function initializeExperiments(
           assetId: "assetId0000017fff1217cd_00000003",
           clientId: "10Table",
           module: {
-            xsd: xsd,
+            xsd: `${xsd}`,
             source: {
               id: "StringID",
               jdbc: {
-                jdbcUrl: jdbcUrl,
-                driverClassName: driverClassName,
+                jdbcUrl: `${jdbcUrl}`,
+                driverClassName: `${driverClassName}`,
                 connectionProperties: "OPTIONAL=TRUE;LOGINTIMEOUT=0",
-                schema: schema,
+                schema: `${schema}`,
               },
-              user: user,
-              password: password,
+              user: `${user}`,
+              password: `${password}`,
             },
             table: {
-              name: `${accuracyVsCoverageTable}`,
-              description: `${accuracyVsCoverageTable}`,
+              name: "ACCURACYVSCOVERAGE",
+              description: "ACCURACYVSCOVERAGE",
               column: [
                 {
                   name: "CONFIDENCETHRESHOLD",
@@ -9116,7 +9111,7 @@ function initializeExperiments(
               expressionLocale: "en-us",
               querySubject: [
                 {
-                  ref: [`ES.${accuracyVsCoverageTable}`],
+                  ref: ["ES.ACCURACYVSCOVERAGE"],
                   instanceType: "reference",
                   item: [
                     {
@@ -9186,8 +9181,8 @@ function initializeExperiments(
                       },
                     },
                   ],
-                  identifier: `${accuracyVsCoverageTable}`,
-                  idForExpression: `${accuracyVsCoverageTable}`,
+                  identifier: "ACCURACYVSCOVERAGE",
+                  idForExpression: "ACCURACYVSCOVERAGE",
                 },
               ],
               dataRetrievalMode: "liveConnection",
@@ -9343,7 +9338,6 @@ function initializeExperiments(
         fillColor: "transparent",
         borderColor: "color1",
       },
-
       model0000017eb18597dc_00000000: {
         id: "model0000017eb18597dc_00000000",
         type: "text",
@@ -9508,13 +9502,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1448369390",
-                  itemId: `${classDistributionTable}.INTENT`,
+                  itemId: "CLASSDISTRIBUTION.INTENT",
                   itemLabel: "Intent",
                   navigationPathId: null,
                 },
                 {
                   id: "id1277556642",
-                  itemId: `${classDistributionTable}.COUNT_`,
+                  itemId: "CLASSDISTRIBUTION.COUNT_",
                   itemLabel: "Count",
                   selection: [
                     {
@@ -9553,6 +9547,12 @@ function initializeExperiments(
         properties: [],
         localFilters: [],
         showTitle: true,
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116089240,
+        },
       },
       model0000017fff1b9dfc_00000004: {
         type: "live",
@@ -9576,13 +9576,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1010568375",
-                  itemId: `${precisionAtKTable}.K`,
+                  itemId: "PRECISIONATK.K",
                   itemLabel: "K",
                   navigationPathId: null,
                 },
                 {
                   id: "id1973712085",
-                  itemId: `${precisionAtKTable}.PRECISION_`,
+                  itemId: "PRECISIONATK.PRECISION_",
                   itemLabel: "Precision",
                   aggregate: "avg",
                   navigationPathId: null,
@@ -9611,6 +9611,12 @@ function initializeExperiments(
         properties: [],
         localFilters: [],
         showTitle: true,
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116087431,
+        },
       },
       model0000017fff1d32bf_00000000: {
         type: "live",
@@ -9634,25 +9640,25 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id676329342",
-                  itemId: `${classAccuracyTable}.PRECISION_`,
+                  itemId: "CLASSACCURACY.PRECISION_",
                   itemLabel: "Precision",
                   navigationPathId: null,
                 },
                 {
                   id: "id1672338317",
-                  itemId: `${classAccuracyTable}.COUNT_`,
+                  itemId: "CLASSACCURACY.COUNT_",
                   itemLabel: "Count",
                   navigationPathId: null,
                 },
                 {
                   id: "id1668976708",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: "CLASSACCURACY.CLASS_",
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id71827175",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: "CLASSACCURACY.CLASS_",
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
@@ -9707,6 +9713,12 @@ function initializeExperiments(
         ],
         localFilters: [],
         showTitle: true,
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116082738,
+        },
       },
       model0000017fff2f930d_00000000: {
         type: "live",
@@ -9730,19 +9742,19 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1650511713",
-                  itemId: `${pairWiseClassErrorsTable}.TRUECLASS`,
+                  itemId: "PAIRWISECLASSERRORS.TRUECLASS",
                   itemLabel: "True Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id_1585230647",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: "PAIRWISECLASSERRORS.PREDICTEDCLASS",
                   itemLabel: "Predicted Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1536647827",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: "PAIRWISECLASSERRORS.CONFIDENCE",
                   itemLabel: "Confidence",
                   aggregate: "avg",
                   format: {
@@ -9760,7 +9772,7 @@ function initializeExperiments(
                 },
                 {
                   id: "id1549813825",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: "PAIRWISECLASSERRORS.PREDICTEDCLASS",
                   itemLabel: "Predicted Class",
                   aggregate: "count",
                   format: {
@@ -9809,9 +9821,10 @@ function initializeExperiments(
         ],
         localFilters: [],
         queryRefresh: {
-          autoRefresh: false,
+          autoRefresh: true,
           unit: "seconds",
-          value: "60",
+          value: "10",
+          lastRefreshed: 1678116088528,
         },
       },
       model0000017fff37764e_00000000: {
@@ -9837,13 +9850,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id2054118281",
-                  itemId: `${accuracyVsCoverageTable}.ACCURACY`,
+                  itemId: "ACCURACYVSCOVERAGE.ACCURACY",
                   itemLabel: "Accuracy",
                   navigationPathId: null,
                 },
                 {
                   id: "id_460908424",
-                  itemId: `${accuracyVsCoverageTable}.COVERAGE`,
+                  itemId: "ACCURACYVSCOVERAGE.COVERAGE",
                   itemLabel: "Coverage",
                   navigationPathId: null,
                 },
@@ -9854,7 +9867,7 @@ function initializeExperiments(
                 },
                 {
                   id: "id_867777022",
-                  itemId: `${accuracyVsCoverageTable}.CONFIDENCETHRESHOLD`,
+                  itemId: "ACCURACYVSCOVERAGE.CONFIDENCETHRESHOLD",
                   itemLabel: "Confidence Threshold",
                   navigationPathId: null,
                 },
@@ -9887,12 +9900,22 @@ function initializeExperiments(
         },
         properties: [
           {
+            id: "valueLabels.visible",
+            value: false,
+          },
+          {
             id: "colorPalette",
             value: "colorPalette4",
           },
         ],
         localFilters: [],
         showTitle: true,
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116085994,
+        },
       },
       model0000017fff3ebe85_00000002: {
         type: "live",
@@ -9916,13 +9939,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id_1585230647",
-                  itemId: `${pairWiseClassErrorsTable}.PREDICTEDCLASS`,
+                  itemId: "PAIRWISECLASSERRORS.PREDICTEDCLASS",
                   itemLabel: "Predicted Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1536647827",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: "PAIRWISECLASSERRORS.CONFIDENCE",
                   itemLabel: "Confidence",
                   aggregate: "avg",
                   format: {
@@ -9940,19 +9963,19 @@ function initializeExperiments(
                 },
                 {
                   id: "id_1508238722",
-                  itemId: `${pairWiseClassErrorsTable}.INPUT_`,
+                  itemId: "PAIRWISECLASSERRORS.INPUT_",
                   itemLabel: "Input",
                   navigationPathId: null,
                 },
                 {
                   id: "id1390261713",
-                  itemId: `${pairWiseClassErrorsTable}.TRUECLASS`,
+                  itemId: "PAIRWISECLASSERRORS.TRUECLASS",
                   itemLabel: "True Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id_542359894",
-                  itemId: `${pairWiseClassErrorsTable}.CONFIDENCE`,
+                  itemId: "PAIRWISECLASSERRORS.CONFIDENCE",
                   itemLabel: "Confidence",
                   navigationPathId: null,
                 },
@@ -10002,9 +10025,10 @@ function initializeExperiments(
         ],
         localFilters: [],
         queryRefresh: {
-          autoRefresh: false,
+          autoRefresh: true,
           unit: "seconds",
-          value: "60",
+          value: "10",
+          lastRefreshed: 1678116090033,
         },
         conditions: {
           palette: {
@@ -10045,12 +10069,12 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1448369390",
-                  itemId: `${classDistributionTable}.INTENT`,
+                  itemId: "CLASSDISTRIBUTION.INTENT",
                   itemLabel: "Intent",
                 },
                 {
                   id: "id1277556642",
-                  itemId: `${classDistributionTable}.COUNT_`,
+                  itemId: "CLASSDISTRIBUTION.COUNT_",
                   itemLabel: "Count",
                   navigationPathId: null,
                 },
@@ -10080,6 +10104,12 @@ function initializeExperiments(
           },
         ],
         localFilters: [],
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116082738,
+        },
       },
       model0000017fff45f3f8_00000000: {
         type: "live",
@@ -10095,13 +10125,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1010568375",
-                  itemId: `${precisionAtKTable}.K`,
+                  itemId: "PRECISIONATK.K",
                   itemLabel: "K",
                   navigationPathId: null,
                 },
                 {
                   id: "id1973712085",
-                  itemId: `${precisionAtKTable}.PRECISION_`,
+                  itemId: "PRECISIONATK.PRECISION_",
                   itemLabel: "Precision",
                   format: {
                     formatSpec: {
@@ -10146,6 +10176,12 @@ function initializeExperiments(
           },
         ],
         localFilters: [],
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116081928,
+        },
       },
       model0000017fff48ec9b_00000000: {
         type: "live",
@@ -10161,13 +10197,13 @@ function initializeExperiments(
               dataItems: [
                 {
                   id: "id1668976708",
-                  itemId: `${classAccuracyTable}.CLASS_`,
+                  itemId: "CLASSACCURACY.CLASS_",
                   itemLabel: "Class",
                   navigationPathId: null,
                 },
                 {
                   id: "id1672338317",
-                  itemId: `${classAccuracyTable}.COUNT_`,
+                  itemId: "CLASSACCURACY.COUNT_",
                   itemLabel: "Count",
                   selection: [
                     {
@@ -10184,7 +10220,7 @@ function initializeExperiments(
                 },
                 {
                   id: "id676329342",
-                  itemId: `${classAccuracyTable}.PRECISION_`,
+                  itemId: "CLASSACCURACY.PRECISION_",
                   itemLabel: "Precision",
                   aggregate: "avg",
                   navigationPathId: null,
@@ -10238,6 +10274,12 @@ function initializeExperiments(
               },
             ],
           },
+        },
+        queryRefresh: {
+          autoRefresh: true,
+          unit: "seconds",
+          value: "10",
+          lastRefreshed: 1678116086272,
         },
       },
     },

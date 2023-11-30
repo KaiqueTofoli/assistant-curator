@@ -1,134 +1,95 @@
-import React, { useState, useEffect } from "react";
-import "carbon-components/css/carbon-components.min.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import Header from "../../components/Header";
-import { useGlobalState } from "../../hooks/globalState";
-import { TextInput, Button, Loading } from "carbon-components-react";
+import texts from "../../helpers/languagesConfig";
+
 import {
-  getAccounts,
-  getResources,
-  switchAccount,
-} from "../../helpers/apiCalls";
+  Theme,
+  Grid,
+  Column,
+  TextInput,
+  Stack,
+  Button,
+  ButtonSet,
+  Loading,
+} from "@carbon/react";
+import { useGlobalState } from "../../hooks/globalState";
+
+import "./style.scss";
+import loginImage from "../../images/login.png";
 
 import api from "../../services/api";
+import {
+  getAssistants,
+  getAvailableWorkspaces,
+  queryAllResources,
+} from "../../helpers/resourcesApiCalls";
+import InterestModal from "../../components/InterestModal";
 
-import { registerLogin, defaultValues } from "../../helpers/helpers";
+export default function Dashboard() {
+  const { language } = useParams();
+  const navigate = useNavigate();
+  const { lightMode, loading, setLoading, setLogged, setAssistants } =
+    useGlobalState();
 
-import "./style.css";
-
-export default function Login() {
-  const {
-    setHelpOpen,
-    setAccountModalOpen,
-    history,
-    setAccount,
-    setAccounts,
-    setResources,
-    credentialsAndDefaults,
-    setCredentialsAndDefaults,
-  } = useGlobalState();
-  const [token, setToken] = useState("");
-  const [invalid, setInvalid] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  async function handleLogin() {
-    setLoading(true);
-    try {
-      await api.post("/ibmid/login", { passcode: token });
-      let res = await getAccounts();
-      setAccounts(res);
-      if (
-        localStorage.getItem("savedAccount") &&
-        res.resources.some(
-          (account) =>
-            JSON.stringify(account) === localStorage.getItem("savedAccount")
-        )
-      ) {
-        console.log("Found account. Picking last one used");
-        await switchAccount(
-          JSON.parse(localStorage.getItem("savedAccount")).metadata.guid
-        ).then(() => {
-          setAccount(JSON.parse(localStorage.getItem("savedAccount")));
-        });
-      } else {
-        console.log("No saved account. Picking default first");
-        setAccount(res.resources[0]);
-        localStorage.removeItem("savedAccount");
-      }
-      setResources(await getResources());
-      history.push("/home");
-
-      registerLogin(
-        `${
-          res.resources[0].entity.primary_owner.ibmid
-        } - ${new Date().toLocaleDateString("pt-BR", {
-          timeZone: "America/Sao_Paulo",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-        })}`,
-        res.resources[0]
-      );
-    } catch (error) {
-      setInvalid(true);
-    }
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    let temp = { ...credentialsAndDefaults };
-    if (credentialsAndDefaults === null) {
-      temp = defaultValues;
-    } else {
-      Object.entries(credentialsAndDefaults.defaults).map(([key, value]) => {
-        if (value === null) {
-          temp.defaults[key] = defaultValues.defaults[key];
-        }
-      });
-    }
-    setCredentialsAndDefaults(temp);
-  }, []);
+  const [oneTimepassword, setOneTimepassword] = useState(null);
 
   return (
-    <div id="login_page">
-      <Header modalOpen={setAccountModalOpen} helpOpen={setHelpOpen} />
-      <div id="login_content">
-        <div id="login_image">
-          <div id="image" />
-        </div>
+    <Theme theme={"g100"}>
+      <Header />
+      <InterestModal />
+      {loading ? <Loading /> : ""}
+      <Grid className="content" style={{ marginTop: "3rem" }}>
+        <Column sm={4} md={8} lg={12} xlg={12}>
+          <img src={loginImage} alt="login" width="94%" height="94%" />
+        </Column>
+        <Column sm={4} md={8} lg={4} xlg={4}>
+          <Stack gap={2}>
+            <h2>Login</h2>
+            <TextInput
+              labelText="Token"
+              type="password"
+              onChange={(e) => {
+                setOneTimepassword(e.target.value);
+              }}
+            ></TextInput>
+            <ButtonSet style={{ width: "50%" }}>
+              <Button
+                href={`${window.location.protocol}//${window.location.host}/ibmid/passcode`}
+                target="_blank"
+                kind="secondary"
+              >
+                Token
+              </Button>
+              <Button
+                disabled={!oneTimepassword}
+                onClick={async () => {
+                  setLoading(true);
+                  console.log("Login in...");
+                  await api.post("/ibmid/login", {
+                    passcode: oneTimepassword,
+                  });
+                  console.log("Loged. Getting Available Workspaces...");
+                  setLogged(true);
+                  const response = await getAvailableWorkspaces();
+                  console.log(response);
+                  console.log(
+                    `Got available Workspaces. Total of ${response.length}.`
+                  );
+                  setAssistants(response.length > 0 ? response : null);
+                  console.log("Done!");
 
-        <div id="login">
-          <h2>Login</h2>
-          <br></br>
-          <TextInput
-            size="md"
-            type="password"
-            labelText="Token"
-            placeholder="IBM Cloud one time Token"
-            required
-            invalid={invalid}
-            invalidText="Please, try againg."
-            value={token}
-            onChange={(event) => {
-              setToken(event.target.value);
-              setInvalid(false);
-            }}
-          />
-          <div id="buttons">
-            <Button
-              className={"button"}
-              href={`${window.location.protocol}//${window.location.host}/ibmid/passcode`}
-              target="_blank"
-              kind="secondary"
-            >
-              Get Token
-            </Button>
-            <Button onClick={handleLogin} className={"button"}>
-              Login
-            </Button>
-          </div>
-        </div>
-        {loading && <Loading />}
-      </div>
-    </div>
+                  setLoading(false);
+                  navigate(`/${language}/lobby`, { replace: true });
+                }}
+              >
+                Login
+              </Button>
+            </ButtonSet>
+          </Stack>
+        </Column>
+      </Grid>
+    </Theme>
   );
 }

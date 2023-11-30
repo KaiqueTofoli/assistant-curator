@@ -1,32 +1,34 @@
 import { useGlobalState } from "../../hooks/globalState";
 import PropTypes from "prop-types";
+import {
+  FaceDissatisfied,
+  FaceNeutral,
+  FaceSatisfied,
+  FaceActivated,
+  FaceCool,
+} from "@carbon/icons-react";
 import Rating from "@mui/material/Rating";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { createRows } from "../../helpers/helpers";
+import { createRows } from "../../helpers/misc";
 
 const customIcons = {
   1: {
-    icon: <SentimentVeryDissatisfiedIcon />,
+    icon: <FaceDissatisfied size={24} />,
     label: "Very Dissatisfied",
   },
   2: {
-    icon: <SentimentDissatisfiedIcon />,
+    icon: <FaceNeutral size={24} />,
     label: "Dissatisfied",
   },
   3: {
-    icon: <SentimentSatisfiedIcon />,
+    icon: <FaceSatisfied size={24} />,
     label: "Neutral",
   },
   4: {
-    icon: <SentimentSatisfiedAltIcon />,
+    icon: <FaceActivated size={24} />,
     label: "Satisfied",
   },
   5: {
-    icon: <SentimentVerySatisfiedIcon />,
+    icon: <FaceCool size={24} />,
     label: "Very Satisfied",
   },
 };
@@ -40,14 +42,14 @@ IconContainer.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function BasicRating({ conversationID, logID, defaultValue }) {
-  const { conversations, setConversations, setRowData } = useGlobalState();
+export default function BasicRating({ intent, logID, defaultValue }) {
+  const { logs, setLogs } = useGlobalState();
 
   function updateScore(newValue) {
-    conversations[conversationID].map((log) => {
+    logs[intent].map((log) => {
       if (log.LOGID === logID) {
         log.SCORE = newValue;
-        createRows(conversations, setRowData);
+        setLogs(logs);
       }
     });
   }

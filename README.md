@@ -1,6 +1,10 @@
 ## **Sobre o Asset**
 
-Este asset foi projetado para atuar como plataforma de curadoria de Watson Assistants. A partir dos logs de conversação gerados pelo mesmo, dados a respeito de seu desempenho são extraídos e transformados em informações de alto nível voltados para o público executivo. Como exemplo, temos: quantidade de conversas não atendidas (transferidas para atendente humano ou não), qualidade da compreensão de intenções do cliente por parte do assistente, histórico do volume de conversas diário, desempenho ao longo do tempo entre outros.
+Este asset foi projetado para atuar como plataforma de curadoria de Watson Assistants. São realizadas análises sob duas diferentes perspectivas:
+
+- **Qualidade do treinamento de intenções:** verifica-se o entendimento do assistente a respeito das intents nele cadastradas, apontando a precisão média e específica do assistente, além de levantar possíveis causas de erro;
+
+- **Desempenho histórico:** através dos logs de conversas anteriores do assistente com seus clientes, são levantados dados sobre como está seu desempenho, como por exemplo: quantidade de conversas não atendidas (transferidas para atendente humano ou não), volume histórico de conversas, feedback recebido, intenções mais acessadas, entre outros.
 
 ## Realizando o Deployment dos Recursos
 
@@ -8,15 +12,17 @@ Essa documentação explica os detalhes do funcionamento do asset. Para visualiz
 
 ## **Arquitetura**
 
-![img](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-arch-v2.png)
+![img](./readMeImgs//assistant-curator.png)
 
-O asset está estruturado em duas principais partes:
+O asset está estruturado em três momentos:
 
-- Uma sequência de [**cloud functions**](https://cloud.ibm.com/docs/openwhisk) que atua na plataforma da IBM Cloud em intervalos de tempo definidos recebendo, transformando e armazenando os logs do assistente;
+1. Uma sequência de [**cloud functions**](https://cloud.ibm.com/docs/openwhisk) que atua na plataforma da IBM Cloud em intervalos de tempo definidos recebendo, transformando e armazenando os logs do assistente;
 
-- Um frontend em que o curador pode avaliar o entendimento do assistente no nível da conversação e visualizar um [**Dashboard executivo**](https://cloud.ibm.com/docs/cognos-dashboard-embedded?topic=cognos-dashboard-embedded-gettingstartedtutorial) gerado a partir dos dados extraídos.
+2. Uma outra função, também deployada como [**cloud function**](https://cloud.ibm.com/docs/openwhisk), responsável por rodar testes avaliando a compreensão do assistente a respeito de suas intents;
 
-A sequência de cloud functions se comunica com o assistente através do método [_listLogs()_](https://cloud.ibm.com/apidocs/assistant-v1?code=node#listlogs) da [API v1](https://cloud.ibm.com/apidocs/assistant-v1) do Watson Assistant. Uma vez com todos os logs, a sequência realiza as seguintes tarefas:
+3. Um frontend em que o curador pode avaliar o assistente, visualizando e confeccionando [**Dashboards**](https://cloud.ibm.com/docs/cognos-dashboard-embedded?topic=cognos-dashboard-embedded-gettingstartedtutorial) gerados a partir dos dados extraídos.
+
+A sequência de cloud functions (1) se comunica com o assistente através do método [_listLogs()_](https://cloud.ibm.com/apidocs/assistant-v1?code=node#listlogs) da [API v1](https://cloud.ibm.com/apidocs/assistant-v1) do Watson Assistant. Uma vez com todos os logs, a sequência realiza as seguintes tarefas:
 
 1. Retira informações consideradas como as mais relevantes para a tarefa de curadoria no **nível do log**:
 
@@ -46,11 +52,11 @@ A sequência de cloud functions se comunica com o assistente através do método
 
 5. Manipulados os logs dessa forma, a sequência finaliza inserindo-os em três bases de dados:[ **Cloudant**](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-client-libraries#client-libraries), [**COS (Cloud Object Storage)**](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) e [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started)
 
-Através de conexão do [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started), com o [**Cognos**](https://cloud.ibm.com/docs/cognos-dashboard-embedded?topic=cognos-dashboard-embedded-gettingstartedtutorial), gráficos são construídos a partir das informações nele armazenadas, geradas pelas cloud functions.
+A cloud function de avaliação de treinamento (2) lista as intents e seus respectivos exemplos através do método [_listIntents()_](https://cloud.ibm.com/apidocs/assistant-v1?code=node#listintents) do Watson Assistant. Aleatoriamente, ela então seleciona alguns exemplos para serem retirados de determinadas intents, criando novos assistentes treinados com estes exemplos "defasados". Conversando com estes assistentes, são extraídas as precisões gerais de suas respostas. As médias de acertos e erros destes assistentes dão um bom embasamento para determinar o quão "forte" é o entendimento do assistente original a respeito de suas intents.
 
-Estes gráficos serão consumidos no frontend, que também conta com uma tabela para que o curador possa avaliar o entendimento do assitente. Essa nota - de padrão variando de 1 a 5 - é utilizada para fazer a validação da qualidade da construção e treino do assistente, uma vez que, ao cruzar a confiança que o assistente tem na principal intenção que compreendeu na frase do cliente com a nota atribuída pelo curador nesta mesma frase, é possível validar a **Eficiência** x **Eficácia** do assistente.
+Através de conexão do [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started) com o [**Cognos**](https://cloud.ibm.com/docs/cognos-dashboard-embedded?topic=cognos-dashboard-embedded-gettingstartedtutorial), torna-se possível gerar gráficos das informações armazenadas.
 
-Entenda-se eficiência como "o fornecer ampla cobertura para as perguntas" e eficácia como "o ato de fornecer respostas certas".
+Além dessas visualizações gráficas, o frontend também conta com uma página em que o curador pode buscar mensagens que tenham despertado determinada intent. É dada a opção para que seja atribuída uma nota do quão satisfeito está com a resposta do assistente.
 
 ## **Pre-requisitos**
 
@@ -58,15 +64,15 @@ Para continuar com esta documentação, é necessário possuir uma conta na [**I
 
 Também é necessário uma instância do Watson Assistant, com um assistente deployado e alguns logs de conversas com o mesmo disponíveis (de padrão, os logs de assistentes dos planos Lite e Plus ficam armazenados apenas por 30 dias).
 
-São necessárias intâncias do [**Cloudant**](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-ibm-cloud-public), [**COS**](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) e [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started). Recomenda-se a realização do deploy de todas elas na própria IBM Cloud.
+São necessárias intâncias do [**Cloudant**](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-ibm-cloud-public), [**COS**](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) e [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started). Recomenda-se a realização do deploy de todas elas na própria IBM Cloud, utilizando os scripts de terraform disponíveis neste mesmo repositório.
 
 Para a realização da extração de sentimento das mensagens enviadas pelo cliente, também é necessário instanciar o serviço do [**NLU**](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-getting-started).
 
 O último serviço a ser instanciado na IBM Cloud é o [**Cognos Embedded**](https://cloud.ibm.com/docs/cognos-dashboard-embedded?topic=cognos-dashboard-embedded-gettingstartedtutorial), responsável pelos Dashboards a ser construídos e apresentados no front.
 
-Conhecimento de como fazer upload de código como [**cloud function**](https://cloud.ibm.com/docs/openwhisk) na IBM Cloud é recomendado, mas este processo acontecerá de forma automatizada através de um script do [**terraform**](https://www.terraform.io/docs).
+Conhecimento de como fazer upload de código como [**cloud function**](https://cloud.ibm.com/docs/openwhisk) na IBM Cloud é recomendado, mas este processo também acontecerá de forma automatizada através de um script do [**terraform**](https://www.terraform.io/docs).
 
-Por último, por gentileza certifique-se de que [**Docker**](https://docs.docker.com/get-docker/) está instalado em sua máquina, uma vez que precisaremos do mesmo para carregar alguns containers e arquivos.
+Por último, por gentileza certifique-se de que [**Docker**](https://docs.docker.com/get-docker/) (ou alguma solução de containerização correlata) está instalado em sua máquina, uma vez que precisaremos do mesmo para carregar alguns containers e arquivos.
 
 ## **Componentes**
 
@@ -78,7 +84,7 @@ Composta de 5 funções diferentes, a sequência está organizada de forma que o
 
 - **create-tables-cf**
 
-  Cria, se necessário, as quatro tabelas que receberam os logs processados na instância do Db2 especificada.
+  Cria, se necessário, as tabelas que receberão os logs processados na instância do Db2 especificada.
 
 - **process-logs-cf**
 
@@ -94,13 +100,15 @@ Composta de 5 funções diferentes, a sequência está organizada de forma que o
 
 - **insert-logs-cf**
 
-  A partir dos objetos gerados nas funções anteriores, nesta etapa final é realizada a comunicação com as três bases de dados: [**Cloudant**](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-ibm-cloud-public), [**COS**](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) e [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started). No Cloudant e COS são armazenados os logs a fim de manter backup dos mesmos, no Db2 temos o armazenamento das informações relevantes filtradas e geradas pelas funções.
+  A partir dos objetos gerados nas funções anteriores, nesta etapa final é realizada a comunicação com as três bases de dados: [**Cloudant**](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-ibm-cloud-public), [**COS**](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) e [**Db2**](https://cloud.ibm.com/docs/Db2onCloud?topic=Db2onCloud-getting-started). No Cloudant e COS são armazenados os logs a fim de manter backup dos mesmos, no Db2 temos o armazenamento das informações relevantes filtradas e geradas pelas funções (Etapa 5)
 
 ### **Interface do curador**
 
-A interface do curador tem duas principais funcionalidades:
+A interface do curador tem as seguintes principais funcionalidades:
 
-- Apresentar a conversa entre cliente e assistente no nível da troca de mensagens para avaliação humana de sua assertividade através de atribuição de nota (1 - 5);
+- Apresentar graficamente a qualidade do entendimento do assistente (sua precisão de acerto) a respeito das intents nele cadastradas dados os exemplos atuais.
+
+- Permitir busca de logs a partir de data ou intent e apresentá-las para atribuição de nota humana;
 
 - Disponibilizar uma interface para a construção e consulta de dashboards interativos que apresentem o desempenho do assistente no decorrer do tempo.
 
@@ -110,7 +118,7 @@ A comunicação com o a instância do Cognos Embedded também se dá através de
 
 ## **Como realizar o Deployment**
 
-Para a documentação sobre como realizar o deploy deste asset, por gentileza consulte o guia encontrado no arquivo `terraform/README.md` dos arquivos baixados.
+Para a documentação sobre como realizar o deploy dos serviços necessários para o funcionamento deste asset, por gentileza consulte o guia encontrado no arquivo `terraform/README.md` dos arquivos baixados.
 
 ## **Guia do Usuário**
 
@@ -118,78 +126,46 @@ Para a documentação sobre como realizar o deploy deste asset, por gentileza co
 
 Ao acessar a página de login, clique no botão para gerar o token, que abrirá uma nova página.
 
-![Tela de Login](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-Tela%20de%20Login.png)
+![Login](./readMeImgs/login.png)
 
 Na nova página, faça o login usando o acesso da IBM Cloud, e copie o token gerado. Feche a página e cole o token gerado na tela de login para fazer o acesso.
 
-![Gerador de Token](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-Gerador%20de%20Token.png)
+![Token](./readMeImgs/passcode.png)
 
-Após logar, será necessário informar qual conta da IBM Cloud será usada, para vincular as instâncias existentes:
-
-![Selecionando a Conta](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-selecting-account.png)
+Ao efetuar login, a interface automaticamente verifica se, dentre os assistentes cadastrados anteriormente, existe algum que o usuário tenha acesso.
 
 ### Homepage
 
 A primeira tela do Assistant Curator é uma Homepage que nos trás uma breve explicação das principais páginas do Asset e um link para cada uma delas.
 
-![Homepage](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-homepage.png)
+![Homepage](./readMeImgs/lobby.png)
 
-A tela contém um menu lateral para navegação do usuário, e podemos ver também um botão de ajuda no canto inferior direito que nos abre um moodal com uma sugestão passo a passo de como executar o processo de curadoria do Assistant analizado. Esse modal pode ser acessado em qualquer página do Assistant Curator.
+A tela contém um menu lateral para navegação do usuário, além de um botão de ajuda no canto inferior direito que abre um modal com uma sugestão passo a passo de como executar o processo de curadoria do Assistant. Esse modal pode ser acessado em qualquer página do Assistant Curator.
 
-![Help Modal](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-help-modal.png)
+![Help Modal](./readMeImgs/helpModal.png)
 
-Em um primeiro acesso precisamos configurar as credenciais. Para configurar as credenciais do Cognos, vá na página `Intent Training Quality` no menu lateral ou pelo card da Homepage.
+Observe que no header há um menu em formato de lista que apresenta o assistente atualmente selecionado. Todos os dados que estão sendo apresentados na interface dizem respeito a este assistente. Para fazer curadoria de outro, basta selecioná-lo no menu:
+
+![Change Assistant](./readMeImgs/changeAssistant.png)
 
 ### Intent Training Quality
 
-Essa tela traz gráficos que mostram gráficos baseados em dados de Experimentos realizados utilizando as Intenções e a árvore de conversação do Assistente.
+Essa tela apresenta os gráficos baseados em dados dos experimentos realizados analisando as intenções, seus respectivos exemplos e a árvore de conversação do Assistente.
 
-Ao acessar a página pela primeira vez, automaticamente o modal de configurações referentes ao Cognos será aberto. Existem quatro tabs de configurações nesse modal, mas das informações necessárias, a maioria já está pré configurada com os valores padrão, não precisando ser alterada.
-
-Escolha o nome das seguintes instância a serem utilizadas:
-
-- Cognos
-- Cloudant
-- Db2
-
-A aba `Nome das Tabelas` já vem com o nome das tabelas preenchidas por padrão e não precisa ser alterada.
-
-Após configurar essas informações, clique no botão de `Recarregar` para visualizar os gráficos.
-
-![Tela de Credenciais do Cognos](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-cognos-credentials-screen.png)
-
-### Conversation Evaluation
-
-Ao acessar essa tela pela primeira vez, informe qual instancia do Db2 será usada para armazenar os logs utilizados nos gráficos.
-
-![Selecionando o Db2](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-selecting-db2.png)
-
-Aqui é apresentada a conversa entre cliente e assistente no nível de troca de mensagens para avaliação humana de sua assertividade, atribuindo uma pontuação (1 - 5).
-
-![Conversation Evaluation](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-conversation-evaluation.png)
-
-Com essa configuração as telas para dar nota (Conversation Evaluation e Intent Search) ficarão disponíveis.
+![Intent Train](./readMeImgs/intentTrain.png)
 
 ### Intent Search
 
-Essa tela nos traz uma visualização diferente das conversas que podemos avaliar, todas agrupadas por Intent e separadas por data, e permitindo uma busca por uma Intent específica.
+Essa tela nos traz uma visualização da troca de mensagens entre cliente e assistente, possibilitando buscas por data e/ou por intent. É possível avaliar estas mensagens, enriquecendo nossa análise com uma nota de satisfação do próprio curador.
 
-![Intent Search](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-intent-search.png)
+![Intent Search](./readMeImgs/intentSearch.png)
 
 ### Conversation Performance
 
-Na página `Conversation Performance` temos a interface do Dashboard interativo. Esses gráficos contém os principais dados sobre o seu Assistant e foram construídos pensando em trazer os dados mais importantes para entender como está o desempenho do seu Assistant.
+Nesta página temos a interface do Dashboard interativo. Esses gráficos contêm os principais dados sobre o seu Assistant e foram construídos pensando em trazer os dados mais importantes para entender como está o desempenho do seu Assistant.
 
-Qualquer altereção pode ser salva no Cloudant para que, no acesso seguinte, suas alterações sejam carregadas da base de dados.
+![Conversation Performance](./readMeImgs/conversationPerformance.png)
 
-Para fazer isso, clique no ícone do disquete que abrirá duas opções: **Salvar** ou **Buscar** um dashboard:
+As visualizações apresentadas podem ser alteradas para melhor atenderem a análise desejada para seu caso de uso. Qualquer modificação pode ser salva a fim de possibilitar coexistência de diferentes versões do dashboard.
 
-![img](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-save-dashboaord.png)
-
-![img](https://portal-de-demos-imgs.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator-load-dashboaord.png)
-
-O nome inserido para salvá-lo será configurado como padrão, de forma que a próxima vez que a aba Cognos for acessada, este será o dashboard inicialmente exibido.
-
-Caso outro dashboard seja carregado através da opção **Buscar**, este novo será escolhido como padrão, sem que o salvo anteriormente seja excluído.
-
-No caso de não haver nenhum dashboard salvo no **Cloudant** consultado, um dashboard padrão com visualizações já disponíveis a respeito do assistente consultado será inicializado e apresentado.
+![](./readMeImgs/saveLoadDashboard.png)

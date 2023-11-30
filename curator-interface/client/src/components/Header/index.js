@@ -1,181 +1,199 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalState } from "../../hooks/globalState";
-import Settings20 from "@carbon/icons-react/lib/settings/20";
-import Help20 from "@carbon/icons-react/lib/help/20";
-import { Save20, Menu20, Close20 } from "@carbon/icons-react";
 import {
   Header,
-  HeaderName,
-  HeaderMenuItem,
   HeaderGlobalAction,
-  HeaderGlobalBar,
-  HeaderPanel,
+  HeaderName,
+  HeaderNavigation,
   HeaderMenu,
-  Switcher,
-  SwitcherItem,
-} from "carbon-components-react/lib/components/UIShell";
+  HeaderMenuItem,
+  HeaderGlobalBar,
+} from "@carbon/react";
 
-import textLanguage from "../../helpers/languagesConfig";
-
-import AccountSelectionModal from "../AccountSelectionModal";
-import HelpModal from "../HelpModal";
-import CognosHelpModal from "../CognosHelpModal";
-import HomeHelp from "../HomeHelp";
+import {
+  Close,
+  Menu,
+  Asleep,
+  Light,
+  Information,
+  Save,
+  Settings,
+  UserIdentification,
+  Share,
+} from "@carbon/icons-react";
 import SideMenu from "../SideNav";
 
-import WarningModal from "../WarningModal";
-import StandardDashboardModal from "../StandardDashboardModal";
-import SuccessModal from "../SuccessModal";
-import IntentHelperModal from "../IntentHelperModal";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { switchAccount } from "../../helpers/apiCalls";
+import "./style.scss";
+import { getRoute } from "../../helpers/misc";
+import { UseFlowModal } from "../UseFlowModal";
 
-import { US, BR, ES } from "country-flag-icons/react/3x2";
-
-import "./style.css";
-export default function HeaderIcc({ modalOpen, helpOpen, renderButton }) {
+export default function HeaderIcc({ renderSave }) {
+  const { language, disableAllInputs } = useParams();
   const {
-    language,
-    setLanguage,
-    setSaveModalOpen,
-    setLoadModalOpen,
-    unsavedChanges,
-    history,
-    accounts,
-    account,
-    setAccount,
-    setAccountLoading,
+    lightMode,
+    setLightMode,
+    languageIcons,
+    assistants,
+    selectedAssistant,
+    setSelectedAssistant,
+    setOpenSaveLoadModal,
+    setOpenActionInputModal,
+    setOpenManualInputModal,
+    setAccountModalOpen,
+    setPublicDashboardsModalOpen,
   } = useGlobalState();
 
-  const languageIcons = { pt: <BR />, es: <ES />, en: <US /> };
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [openSidePanel, setOpenSidePanel] = useState(false);
-  const [openSaveMenu, setOpenSaveMenu] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
-    <Header aria-label="IBM Innovation Studio" id={"Header"}>
-      {!history.location.pathname.includes("login") && (
-        <HeaderGlobalAction
-          className="navMenu"
-          aria-label="Open menu"
-          onClick={() => setOpenSidePanel(!openSidePanel)}
-        >
-          {openSidePanel ? <Close20 /> : <Menu20 />}
-        </HeaderGlobalAction>
-      )}
-      <HeaderName
-        prefix="IBM Innovation Studio"
-        onClick={() => history.push("/home")}
-      >
-        Assistant Curator
-      </HeaderName>
-      {!history.location.pathname.includes("login") && (
-        <>
-          <SideMenu open={openSidePanel} />
-          <HeaderGlobalBar>
-            {renderButton && (
-              <HeaderGlobalAction
-                aria-label="Save"
-                onClick={() => {
-                  openSaveMenu ? setOpenSaveMenu(false) : setOpenSaveMenu(true);
-                }}
-              >
-                {unsavedChanges ? (
-                  <Save20 style={{ fill: "#4589ff" }} />
-                ) : (
-                  <Save20 />
-                )}
-              </HeaderGlobalAction>
-            )}
-
-            <HeaderMenu menuLinkName={account.entity.name}>
-              {accounts.resources.map((acc) => (
-                <HeaderMenuItem
-                  id="accounts"
-                  onClick={() => {
-                    switchAccount(acc.metadata.guid).then(() => {
-                      localStorage.setItem("savedAccount", JSON.stringify(acc));
-                      setAccount(acc);
-                      setAccountLoading(true);
-                      modalOpen(true);
-                    });
-                  }}
-                >
-                  {acc.entity.name}
-                </HeaderMenuItem>
-              ))}
-            </HeaderMenu>
-
-            <HeaderMenu menuLinkName={languageIcons[language]}>
-              {Object.entries(languageIcons).map(([key, value]) => (
-                <HeaderMenuItem
-                  onClick={() => {
-                    setLanguage(key);
-                    localStorage.setItem("language", key);
-                  }}
-                >
-                  {value}
-                  {` ${key.toUpperCase()}`}
-                </HeaderMenuItem>
-              ))}
-            </HeaderMenu>
-
-            <HeaderGlobalAction
-              aria-label="Settings"
-              onClick={() => {
-                modalOpen(true);
-              }}
-            >
-              <Settings20 />
-            </HeaderGlobalAction>
-
-            <HeaderGlobalAction
-              aria-label="Help"
-              onClick={() => {
-                helpOpen(true);
-              }}
-            >
-              <Help20 />
-            </HeaderGlobalAction>
-          </HeaderGlobalBar>
-
-          <HeaderPanel
-            aria-label="Header Panel"
-            expanded={openSaveMenu}
-            style={{ height: "100px", maxWidth: "145px" }}
+    <>
+      <Header aria-label="Assistant Curator">
+        {location.pathname.includes("login") ||
+        location.pathname.includes("view") ? (
+          ""
+        ) : (
+          <HeaderGlobalAction
+            className="navMenu"
+            onClick={() => setOpenSidePanel(!openSidePanel)}
           >
-            <Switcher aria-label="Switcher Container">
-              <SwitcherItem
-                aria-label="Save"
-                onClick={async () => {
-                  setOpenSaveMenu(false);
-                  setSaveModalOpen(true);
+            {openSidePanel ? <Close /> : <Menu />}
+          </HeaderGlobalAction>
+        )}
+        <HeaderName
+          onClick={() => navigate(`/${language}/lobby`)}
+          prefix="Innovation Studio"
+          style={{ cursor: "pointer" }}
+        >
+          Assistant Curator
+        </HeaderName>
+        {location.pathname.includes("login") ||
+        location.pathname.includes("view") ? (
+          ""
+        ) : (
+          <>
+            <HeaderGlobalBar>
+              <HeaderNavigation aria-label="language-bar">
+                <HeaderMenu
+                  aria-label="assistants"
+                  menuLinkName={
+                    selectedAssistant?.SKILL_NAME ?? "Não há WA cadastrados"
+                  }
+                >
+                  {assistants?.map((assistant, index) => {
+                    return (
+                      <HeaderMenuItem
+                        key={index}
+                        onClick={() => {
+                          setSelectedAssistant(assistant);
+                        }}
+                      >
+                        {assistant?.SKILL_NAME}
+                      </HeaderMenuItem>
+                    );
+                  })}
+                </HeaderMenu>
+                <HeaderMenu
+                  aria-label="language"
+                  menuLinkName={languageIcons[language]}
+                >
+                  {Object.entries(languageIcons).map(([key, value], index) => (
+                    <HeaderMenuItem
+                      key={index}
+                      onClick={() => {
+                        navigate(getRoute(location.pathname, key));
+                      }}
+                    >
+                      {value}
+                      {` ${key.toUpperCase()}`}
+                    </HeaderMenuItem>
+                  ))}
+                </HeaderMenu>
+                {location.pathname.includes("assistants") && (
+                  <HeaderMenu
+                    aria-label="Advanced Settings"
+                    renderMenuContent={Settings}
+                  >
+                    <HeaderMenuItem
+                      key={"advanced-settings-0"}
+                      onClick={() => {
+                        setOpenActionInputModal(true);
+                      }}
+                    >
+                      Assistente Actions
+                    </HeaderMenuItem>
+                    <HeaderMenuItem
+                      key={"advanced-settings-1"}
+                      onClick={() => {
+                        setOpenManualInputModal(true);
+                      }}
+                    >
+                      Cadastro Manual
+                    </HeaderMenuItem>
+                  </HeaderMenu>
+                )}
+              </HeaderNavigation>
+              {renderSave && (
+                <>
+                  <HeaderGlobalAction
+                    aria-label="Save"
+                    onClick={() => {
+                      setOpenSaveLoadModal(true);
+                    }}
+                  >
+                    <Save />
+                  </HeaderGlobalAction>
+                  <HeaderGlobalAction
+                    aria-label="Share"
+                    onClick={() => {
+                      setPublicDashboardsModalOpen(true);
+                    }}
+                  >
+                    <Share />
+                  </HeaderGlobalAction>
+                </>
+              )}
+              {location.pathname.includes("assistants") ? (
+                <>
+                  <HeaderGlobalAction
+                    aria-label="Account"
+                    onClick={() => {
+                      setAccountModalOpen(true);
+                    }}
+                  >
+                    <UserIdentification />
+                  </HeaderGlobalAction>
+                </>
+              ) : (
+                ""
+              )}
+              <HeaderGlobalAction
+                aria-label="Theme"
+                onClick={() => {
+                  setLightMode(!lightMode);
                 }}
               >
-                {unsavedChanges
-                  ? textLanguage[language].headerSwitcher.save
-                  : textLanguage[language].headerSwitcher.upToDate}
-              </SwitcherItem>
-              <SwitcherItem
-                aria-label="Load"
-                onClick={async () => {
-                  setOpenSaveMenu(false);
-                  setLoadModalOpen(true);
-                }}
-              >
-                {textLanguage[language].headerSwitcher.load}
-              </SwitcherItem>
-            </Switcher>
-          </HeaderPanel>
-          <AccountSelectionModal modalOpen={modalOpen} />
-          <HelpModal />
-          <CognosHelpModal />
-          <HomeHelp />
-          <WarningModal />
-          <StandardDashboardModal />
-          <SuccessModal />
-          <IntentHelperModal />
-        </>
+                {lightMode ? <Asleep /> : <Light />}
+              </HeaderGlobalAction>
+            </HeaderGlobalBar>
+            <SideMenu open={openSidePanel} />
+          </>
+        )}
+      </Header>
+      {location.pathname.includes("login") ||
+      location.pathname.includes("view") ? (
+        ""
+      ) : (
+        <div id="helpModalToggle" onClick={() => setOpenModal(true)}>
+          <Information size={30} color="white" />
+        </div>
       )}
-    </Header>
+      <UseFlowModal openModal={openModal} setOpenModal={setOpenModal} />
+    </>
   );
 }

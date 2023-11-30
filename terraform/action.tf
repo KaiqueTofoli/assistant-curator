@@ -15,32 +15,61 @@ resource "ibm_function_namespace" "namespace" {
   resource_group_id = data.ibm_resource_group.group.id
 }
 
-data "archive_file" "actions" {
+data "archive_file" "cloud-functions-actions" {
   count       = length(local.actions)
   type        = "zip"
-  source_dir  = "../cloud-functions/${local.actions[count.index].name}"
-  output_path = "../cloud-functions/${local.actions[count.index].name}.zip"
+  source_dir  = "../cloud-functions/action-assistant/${local.actions[count.index].name}"
+  output_path = "../cloud-functions/action-assistant/${local.actions[count.index].name}.zip"
 }
 
-resource "ibm_function_action" "action" {
+data "archive_file" "cloud-functions-skills" {
+  count       = length(local.actions)
+  type        = "zip"
+  source_dir  = "../cloud-functions/skill-assistant/${local.actions[count.index].name}"
+  output_path = "../cloud-functions/skill-assistant/${local.actions[count.index].name}.zip"
+}
+
+resource "ibm_function_action" "actions" {
   count     = length(local.actions)
-  name      = local.actions[count.index].name
+  name      = "actions-${local.actions[count.index].name}"
   namespace = local.namespace_name
   # user_defined_parameters = local.actions[count.index].user_defined_parameters
 
   exec {
-    code_path = "../cloud-functions/${local.actions[count.index].name}.zip"
+    code_path = "../cloud-functions/action-assistant/${local.actions[count.index].name}.zip"
     kind      = "nodejs:12"
   }
 }
 
-resource "ibm_function_action" "sequence" {
-  name      = "assistant-curation-tf"
+resource "ibm_function_action" "skills" {
+  count     = length(local.actions)
+  name      = "skills-${local.actions[count.index].name}"
+  namespace = local.namespace_name
+  # user_defined_parameters = local.actions[count.index].user_defined_parameters
+
+  exec {
+    code_path = "../cloud-functions/skill-assistant/${local.actions[count.index].name}.zip"
+    kind      = "nodejs:12"
+  }
+}
+
+resource "ibm_function_action" "actions-sequence" {
+  name      = "assistant-curator-actions"
   namespace = local.namespace_name
 
   exec {
     kind       = "sequence"
-    components = [for o in ibm_function_action.action : "/${local.namespace_id}/${o.name}"]
+    components = [for o in ibm_function_action.actions : "/${local.namespace_id}/${o.name}"]
+  }
+}
+
+resource "ibm_function_action" "skills-sequence" {
+  name      = "assistant-curator-skills"
+  namespace = local.namespace_name
+
+  exec {
+    kind       = "sequence"
+    components = [for o in ibm_function_action.skills : "/${local.namespace_id}/${o.name}"]
   }
 }
 
@@ -71,19 +100,39 @@ resource "ibm_function_action" "sequence" {
 
 data "archive_file" "experiments-actions" {
   type        = "zip"
-  source_dir  = "../cloud-functions/watson-experiments-cf"
-  output_path = "../cloud-functions/watson-experiments-cf.zip"
+  source_dir  = "../cloud-functions/action-assistant/watson-experiments-cf"
+  output_path = "../cloud-functions/action-assistant/watson-experiments-cf.zip"
 }
 
-resource "ibm_function_action" "watson-experiments" {
-  name      = "watson-experiments-cf"
+data "archive_file" "experiments-skills" {
+  type        = "zip"
+  source_dir  = "../cloud-functions/skill-assistant/watson-experiments-cf"
+  output_path = "../cloud-functions/skill-assistant/watson-experiments-cf.zip"
+}
+
+resource "ibm_function_action" "watson-experiments-actions" {
+  name      = "watson-experiments-cf-actions"
   namespace = local.namespace_name
   limits {
     timeout = 130000
   }
 
   exec {
-    code_path = "../cloud-functions/watson-experiments-cf.zip"
+    code_path = "../cloud-functions/action-assistant/watson-experiments-cf.zip"
+    image     = "iisbrasil/experiment-package"
+    kind      = "blackbox"
+  }
+}
+
+resource "ibm_function_action" "watson-experiments-skills" {
+  name      = "watson-experiments-cf-skills"
+  namespace = local.namespace_name
+  limits {
+    timeout = 130000
+  }
+
+  exec {
+    code_path = "../cloud-functions/skill-assistant/watson-experiments-cf.zip"
     image     = "iisbrasil/experiment-package"
     kind      = "blackbox"
   }

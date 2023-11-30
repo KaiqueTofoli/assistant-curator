@@ -30,7 +30,7 @@ resource "ibm_resource_instance" "cos" {
 
 resource "ibm_cos_bucket" "bucket" {
   count                = var.create_bucket ? 1 : 0
-  bucket_name          = "assistant-curation-${formatdate("DDMMYYYYhhmmss", timestamp())}"
+  bucket_name          = "assistant-curator-${formatdate("DDMMYYYYhhmmss", timestamp())}"
   resource_instance_id = ibm_resource_instance.cos[0].id
   region_location      = var.cloud_region
   storage_class        = "smart"

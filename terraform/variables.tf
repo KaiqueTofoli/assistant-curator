@@ -25,16 +25,22 @@ variable "resource_group" {
 #                                                             #
 ###############################################################
 
-variable "git_repo_url" {
-  description = "The HTTPS link to your GitHub Repository root directory.\nSee how you can get this link here: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository."
+variable "docker_image" {
+  description = "The Docker Image used to create the application in Code Engine./nIf you make changes to your Assistant Curator, you MUST save your Image in a new Container Hub and change this variable. "
   type        = string
+  default     = "giokiszibm/curator-teste-giokisz"
 }
 
-variable "dockerfile_directory" {
-  description = "The location of the Dockerfile in the Git Repository.\nOnly need to change if you change the Dockerfile directory."
-  default     = "curator-interface/backend"
-  type        = string
-}
+# variable "git_repo_url" {
+#   description = "The HTTPS link to your GitHub Repository root directory.\nSee how you can get this link here: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository."
+#   type        = string
+# }
+
+# variable "dockerfile_directory" {
+#   description = "The location of the Dockerfile in the Git Repository.\nOnly need to change if you change the Dockerfile directory."
+#   default     = "curator-interface/backend"
+#   type        = string
+# }
 
 ###############################################################
 #                                                             #
@@ -67,7 +73,7 @@ variable "deploy_cos" {
 }
 
 variable "create_bucket" {
-  description = "If marked as true, the default 'assistant-curation' bucket will be created."
+  description = "If marked as true, the default 'assistant-curator' bucket will be created."
   type        = bool
   default     = false
 }

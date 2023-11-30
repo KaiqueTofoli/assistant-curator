@@ -1,44 +1,44 @@
-import { SideNav, SideNavItems, SideNavLink } from "carbon-components-react";
-
 import {
-  ChartMultitype32,
-  Analytics32,
-  WatsonHealthMagnify32,
-  FaceAdd32,
+  Analytics,
+  WatsonHealthMagnify,
+  Dashboard,
+  UserAdmin,
 } from "@carbon/icons-react";
-import { useGlobalState } from "../../hooks/globalState";
 
-import "./style.css";
+import "./style.scss";
+import { useNavigate, useParams } from "react-router-dom";
+import { SideNav, SideNavItems, SideNavLink } from "@carbon/react";
 
 export default function SideMenu({ open }) {
-  const { language, history } = useGlobalState();
+  const navigate = useNavigate();
+  const { language } = useParams();
 
   return (
-    <SideNav expanded={open} isRail>
+    <SideNav expanded={open} isRail aria-label="side-navigation">
       <SideNavItems>
         <SideNavLink
-          renderIcon={Analytics32}
-          onClick={() => history.push(`/train`)}
+          renderIcon={Analytics}
+          onClick={() => navigate(`/${language}/train`)}
         >
           Intent Train Quality
         </SideNavLink>
         <SideNavLink
-          renderIcon={FaceAdd32}
-          onClick={() => history.push(`/dashboard`)}
-        >
-          Conversation Evaluation
-        </SideNavLink>
-        <SideNavLink
-          renderIcon={WatsonHealthMagnify32}
-          onClick={() => history.push(`/search`)}
+          renderIcon={WatsonHealthMagnify}
+          onClick={() => navigate(`/${language}/intents`)}
         >
           Intent Search
         </SideNavLink>
         <SideNavLink
-          renderIcon={ChartMultitype32}
-          onClick={() => history.push(`/cognos`)}
+          renderIcon={Dashboard}
+          onClick={() => navigate(`/${language}/dashboard`)}
         >
           Conversation Performance
+        </SideNavLink>
+        <SideNavLink
+          renderIcon={UserAdmin}
+          onClick={() => navigate(`/${language}/assistants`)}
+        >
+          Assistant Registration
         </SideNavLink>
       </SideNavItems>
     </SideNav>

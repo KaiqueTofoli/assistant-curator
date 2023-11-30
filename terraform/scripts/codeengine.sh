@@ -6,30 +6,36 @@ ibmcloud target -r $REGION
 
 # Install plugins
 ibmcloud plugin install -f code-engine
-ibmcloud plugin install -f container-registry
+# ibmcloud plugin install -f container-registry
 
 # Select the Code Engine Project
 ibmcloud ce project select -n $PROJECT_NAME
 
 # Clean the enviromment
-ibmcloud ce registry delete -n assistant-curator-cr-secret -f
-ibmcloud ce buildrun delete -n curator-run -f
-ibmcloud ce build delete -n curator-build -f
-# ibmcloud ce app delete -n $PROJECT_NAME -f
+# ibmcloud ce registry delete -n assistant-curator-cr-secret -f
+# ibmcloud ce buildrun delete -n curator-run -f
+# ibmcloud ce build delete -n curator-build -f
+ibmcloud ce app delete -n $PROJECT_NAME -f
 
 # Grab the Container Registry server location based no our region
-export ICR=$(ibmcloud cr info | sed -n 's/.*Registry   *\(.*icr.io\).*/\1/p')
+# export ICR=$(ibmcloud cr info | sed -n 's/.*Registry   *\(.*icr.io\).*/\1/p')
 
 # Create an apikey, put it in a registry secret. Used to push/pull image to Container Registry
-ibmcloud ce registry create --name assistant-curator-cr-secret \
-    --password $APIKEY -s $ICR -u iamapikey
+# ibmcloud ce registry create --name assistant-curator-cr-secret \
+#     --password $APIKEY -s $ICR -u iamapikey
 
 # Create a build from the github repository
-ibmcloud ce build create -n curator-build -i "$ICR/${ICR_NS}/app" --rs assistant-curator-cr-secret \
-    --source $GIT_REPO_URL --context-dir $DOCKERFILE_DIRECTORY
+# ibmcloud ce build create -n curator-build -i "$ICR/${ICR_NS}/app" --rs assistant-curator-cr-secret \
+#     --source $GIT_REPO_URL --context-dir $DOCKERFILE_DIRECTORY
 
 # Now kick off the build itself
-ibmcloud ce buildrun submit -n curator-run --build curator-build --wait
+# ibmcloud ce buildrun submit -n curator-run --build curator-build --wait
 
 # Create the app on Code Engine with the Image
-ibmcloud ce app create -n $PROJECT_NAME --image "$ICR/${ICR_NS}/app" --registry-secret assistant-curator-cr-secret
+ibmcloud ce app create -n $PROJECT_NAME --image "giokiszibm/curator-teste-giokisz" \
+--env APIKEY=$APIKEY  --env RESOURCE_GROUP=$RESOURCE_GROUP --env REGION=$REGION \
+--env FUNCTIONS_NAMESPACE_ID=$FUNCTIONS_NAMESPACE_ID --env ENCRIPTION_KEY=$ENCRIPTION_KEY \
+--env ENCRIPTION_IV=$ENCRIPTION_IV --env EXPERIMENTS_ACTIONS_URL=$EXPERIMENTS_ACTIONS_URL \
+--env EXPERIMENTS_SKILLS_URL=$EXPERIMENTS_SKILLS_URL --env COGNOS_USERNAME=$COGNOS_USERNAME \
+--env COGNOS_PASSWORD=$COGNOS_PASSWORD --env CLOUDANT_API_KEY=$CLOUDANT_API_KEY \
+--env CLOUDANT_URL=$CLOUDANT_URL

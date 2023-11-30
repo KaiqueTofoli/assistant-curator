@@ -13,22 +13,22 @@ function createCloudantClient(apiKey, url) {
   return client;
 }
 
-async function createDbAndDoc(client, dbName, docId, document) {
+async function createDbAndDoc(client, docId, document, public) {
   return new Promise(async (resolve, reject) => {
     document._id = docId;
     try {
       const putDatabaseResult = (
         await client.putDatabase({
-          db: dbName,
+          db: public ? "public-dashboards" : "dashboards-v2",
         })
       ).result;
       if (putDatabaseResult.ok) {
-        console.log(`"${dbName}" database created.`);
+        console.log(`Database created.`);
       }
     } catch (err) {
       if (err.code === 412) {
         console.log(
-          `Cannot create "${dbName}" database, it already exists. Will connect to existing Db...`
+          `Cannot create database, it already exists. Will connect to existing Db...`
         );
       } else {
         reject(err);
@@ -37,7 +37,7 @@ async function createDbAndDoc(client, dbName, docId, document) {
 
     try {
       const createDocumentResponse = await client.postDocument({
-        db: dbName,
+        db: public ? "public-dashboards" : "dashboards-v2",
         document: document,
       });
 
@@ -49,7 +49,7 @@ async function createDbAndDoc(client, dbName, docId, document) {
         console.log(
           `Cannot create document, as it already exists. Will try updating it instead...`
         );
-        resolve(await updateDoc(client, dbName, docId, document));
+        resolve(await updateDoc(client, docId, document, public));
       } else {
         reject(err);
       }
@@ -57,14 +57,14 @@ async function createDbAndDoc(client, dbName, docId, document) {
   });
 }
 
-async function updateDoc(client, dbName, docId, document) {
+async function updateDoc(client, docId, document, public) {
   return new Promise(async (resolve, reject) => {
     // Try to get the document if it previously existed in the database
     try {
       const existingDocument = (
         await client.getDocument({
           docId: docId,
-          db: dbName,
+          db: public ? "public-dashboards" : "dashboards-v2",
         })
       ).result;
 
@@ -72,7 +72,7 @@ async function updateDoc(client, dbName, docId, document) {
       document._id = docId;
 
       await client.postDocument({
-        db: dbName,
+        db: public ? "public-dashboards" : "dashboards-v2",
         document: document,
       });
 
@@ -80,17 +80,20 @@ async function updateDoc(client, dbName, docId, document) {
     } catch (err) {
       if (err.code === 404) {
         reject(
-          `Cannot update document because either "${dbName}" database or document was not found.`
+          `Cannot update document because either database or document was not found.`
         );
       }
     }
   });
 }
 
-async function getDoc(client, dbName, docId) {
+async function getDoc(client, docId, public) {
   return new Promise(async (resolve, reject) => {
     try {
-      const getDocParams = { db: dbName, docId: docId };
+      const getDocParams = {
+        db: public ? "public-dashboards" : "dashboards-v2",
+        docId: docId,
+      };
       const response = await client.getDocument(getDocParams);
       const { result } = response;
 
@@ -101,8 +104,58 @@ async function getDoc(client, dbName, docId) {
   });
 }
 
+async function deleteDoc(client, document, public) {
+  return new Promise(async (resolve, reject) => {
+    // Try to get the document if it previously existed in the database
+    try {
+      try {
+        await client.deleteDocument({
+          db: public ? "public-dashboards" : "dashboards-v2",
+          docId: document.id,
+          rev: document.doc._rev,
+        });
+      } catch (err) {
+        const existingDocument = (
+          await client.getDocument({
+            docId: document.id,
+            db: public ? "public-dashboards" : "dashboards-v2",
+          })
+        ).result;
+
+        await client.deleteDocument({
+          db: public ? "public-dashboards" : "dashboards-v2",
+          docId: document.id,
+          rev: existingDocument._rev,
+        });
+      }
+      resolve("Document deleted with success.");
+    } catch (err) {
+      console.log(err);
+    }
+  });
+}
+
+async function getAllDocs(client) {
+  try {
+    const response = await client.postAllDocs({
+      db: "public-dashboards",
+      includeDocs: true,
+    });
+    return response.result;
+  } catch (err) {
+    console.log(err);
+    return {
+      total_rows: 0,
+      offset: 0,
+      rows: [],
+    };
+  }
+}
+
 module.exports = {
   createCloudantClient,
   createDbAndDoc,
   getDoc,
+  deleteDoc,
+  getAllDocs,
 };
